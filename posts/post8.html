@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Docker và Containerization - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Docker và Containerization</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 6 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/docker-containerization.jpg" alt="Docker và Containerization" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Docker đã cách mạng hóa cách chúng ta deploy và quản lý applications. Containerization 
+              giúp đảm bảo consistency giữa development, testing và production environments. 
+              Trong bài viết này, chúng ta sẽ khám phá Docker từ cơ bản đến nâng cao.
+            </p>
+
+            <h2 class="post-section-title">Docker Fundamentals</h2>
+            <p>
+              Docker sử dụng containers để package applications cùng với tất cả dependencies cần thiết.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-dockerfile"># Basic Dockerfile for Node.js application
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
+COPY . .
+
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+USER nextjs
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+# Start application
+CMD ["npm", "start"]
+
+# Multi-stage build for optimization
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM node:18-alpine AS runner
+
+WORKDIR /app
+ENV NODE_ENV production
+
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+ENV PORT 3000
+
+CMD ["node", "server.js"]</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Docker Compose</h2>
+            <p>
+              Docker Compose cho phép define và run multi-container Docker applications với một file cấu hình.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-yaml"># docker-compose.yml
+version: '3.8'
+
+services:
+  # Web application
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://user:password@db:5432/myapp
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Database
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Redis cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - web
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  # Log aggregation
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  elasticsearch_data:
+
+networks:
+  app-network:
+    driver: bridge</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Advanced Docker Patterns</h2>
+            <p>
+              Các patterns nâng cao giúp tối ưu hóa Docker containers cho production environments.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-dockerfile"># Production-ready Dockerfile
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Build application
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/api/health || exit 1
+
+CMD ["node", "server.js"]
+
+# Development Dockerfile
+FROM node:18-alpine AS development
+
+WORKDIR /app
+
+# Install development dependencies
+RUN apk add --no-cache git
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Start development server
+CMD ["npm", "run", "dev"]
+
+# Testing Dockerfile
+FROM node:18-alpine AS test
+
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Run tests
+CMD ["npm", "test"]</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Docker Networking và Security</h2>
+            <p>
+              Networking và security là những khía cạnh quan trọng khi deploy Docker containers.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-bash"># Docker networking commands
+# Create custom network
+docker network create --driver bridge my-network
+
+# Connect container to network
+docker run --network my-network --name web-app -d my-app
+
+# Inspect network
+docker network inspect my-network
+
+# List networks
+docker network ls
+
+# Remove network
+docker network rm my-network
+
+# Docker security best practices
+# Run container as non-root user
+docker run --user 1001:1001 my-app
+
+# Limit container resources
+docker run --memory=512m --cpus=1.0 my-app
+
+# Use secrets for sensitive data
+echo "my-secret-password" | docker secret create db_password -
+
+# Run container with secrets
+docker service create --secret db_password my-app
+
+# Security scanning
+docker scan my-app:latest
+
+# Multi-architecture builds
+docker buildx create --name mybuilder --use
+docker buildx build --platform linux/amd64,linux/arm64 -t my-app:latest .
+
+# Container orchestration with Docker Swarm
+# Initialize swarm
+docker swarm init
+
+# Create service
+docker service create --name web --replicas 3 --publish 80:3000 my-app
+
+# Scale service
+docker service scale web=5
+
+# Update service
+docker service update --image my-app:v2 web
+
+# Rolling update
+docker service update --update-parallelism 1 --update-delay 10s web
+
+# Health checks in Dockerfile
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:3000/health || exit 1
+
+# Docker secrets management
+# Create secret
+echo "my-database-password" | docker secret create db_password -
+
+# Use secret in service
+docker service create \
+  --name web \
+  --secret db_password \
+  --env DB_PASSWORD_FILE=/run/secrets/db_password \
+  my-app
+
+# Docker configs for non-sensitive data
+echo "server {
+    listen 80;
+    server_name example.com;
+    location / {
+        proxy_pass http://web:3000;
+    }
+}" | docker config create nginx_config -
+
+# Use config in service
+docker service create \
+  --name nginx \
+  --config nginx_config \
+  nginx:alpine</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Docker trong CI/CD Pipeline</h2>
+              <p>
+                Tích hợp Docker vào CI/CD pipeline để automate build, test và deployment.
+              </p>
+
+              <div class="code-block">
+                <pre><code class="language-yaml"># GitHub Actions workflow
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Build test image
+      run: |
+        docker build -f Dockerfile.test -t test-image .
+    
+    - name: Run tests
+      run: |
+        docker run --rm test-image npm test
+    
+    - name: Run security scan
+      run: |
+        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+          aquasec/trivy image test-image
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Log in to Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha,prefix={{branch}}-
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to production
+      run: |
+        # Deploy to production server
+        ssh user@production-server << EOF
+          docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker service update --image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest web
+        EOF
+
+# GitLab CI/CD pipeline
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:dind
+
+before_script:
+  - docker info
+
+test:
+  stage: test
+  script:
+    - docker build -f Dockerfile.test -t test-image .
+    - docker run --rm test-image npm test
+    - docker run --rm test-image npm run lint
+
+build:
+  stage: build
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+  only:
+    - main
+
+deploy:
+  stage: deploy
+  script:
+    - docker service update --image $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA web
+  only:
+    - main
+  when: manual</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Monitoring và Logging</h2>
+            <p>
+              Monitoring và logging là essential cho production Docker deployments.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-yaml"># docker-compose.monitoring.yml
+version: '3.8'
+
+services:
+  # Prometheus for metrics
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
+
+  # Node Exporter for system metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+
+  # cAdvisor for container metrics
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    restart: unless-stopped
+
+  # ELK Stack for logging
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    restart: unless-stopped
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.8.0
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  # Fluentd for log collection
+  fluentd:
+    image: fluent/fluentd:latest
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+      - /var/log:/var/log
+    ports:
+      - "24224:24224"
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+volumes:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi sử dụng Docker trong production, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Use multi-stage builds:</strong> Giảm image size và tăng security</li>
+              <li><strong>Run as non-root:</strong> Tăng security bằng cách chạy container với non-root user</li>
+              <li><strong>Use .dockerignore:</strong> Exclude unnecessary files từ build context</li>
+              <li><strong>Optimize layers:</strong> Order Dockerfile instructions để maximize cache</li>
+              <li><strong>Health checks:</strong> Implement health checks cho containers</li>
+              <li><strong>Resource limits:</strong> Set memory và CPU limits cho containers</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Docker và containerization đã trở thành standard trong modern software development. 
+              Với việc hiểu rõ Docker fundamentals, Docker Compose, CI/CD integration và monitoring, 
+              bạn có thể deploy và manage applications một cách hiệu quả và scalable.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/database-design.jpg" alt="Database Design" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Database Design và SQL Optimization</h5>
+                <p class="recent-post-excerpt">Thiết kế database và tối ưu hóa SQL queries hiệu quả...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/react-hooks.jpg" alt="React Hooks" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">React Hooks và Modern Component Development</h5>
+                <p class="recent-post-excerpt">Khám phá React Hooks và cách phát triển components hiện đại...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

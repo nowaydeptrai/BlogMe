@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Microservices Architecture và API Gateway - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Microservices Architecture và API Gateway</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 4 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/microservices-architecture.jpg" alt="Microservices Architecture và API Gateway" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Microservices architecture đã trở thành standard cho việc xây dựng scalable và maintainable applications. 
+              Trong bài viết này, chúng ta sẽ khám phá cách thiết kế microservices và implement API Gateway 
+              để quản lý communication giữa các services.
+            </p>
+
+            <h2 class="post-section-title">Microservices Fundamentals</h2>
+            <p>
+              Microservices là một architectural approach trong đó applications được chia thành các services nhỏ, 
+              độc lập và có thể deploy riêng biệt.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// User Service - Node.js/Express
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
+
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+
+// User Schema
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['user', 'admin'], default: 'user' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+
+// Routes
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find().select('-password');
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.post('/api/users', async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+    res.status(201).json({ id: user._id, message: 'User created successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.put('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body, updatedAt: new Date() },
+      { new: true }
+    ).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+app.delete('/api/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', service: 'user-service' });
+});
+
+// Database connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/users', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`User service running on port ${PORT}`);
+});
+
+module.exports = app;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">API Gateway Implementation</h2>
+            <p>
+              API Gateway đóng vai trò là single entry point cho tất cả client requests, 
+              routing chúng đến appropriate microservices.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// API Gateway - Express.js
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const cors = require('cors');
+const jwt = require('jsonwebtoken');
+
+const app = express();
+
+// Middleware
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 1000
+});
+app.use(limiter);
+
+// JWT Authentication middleware
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access token required' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ error: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+// Service discovery configuration
+const services = {
+  userService: {
+    url: process.env.USER_SERVICE_URL || 'http://localhost:3001',
+    routes: ['/api/users']
+  },
+  productService: {
+    url: process.env.PRODUCT_SERVICE_URL || 'http://localhost:3002',
+    routes: ['/api/products']
+  },
+  orderService: {
+    url: process.env.ORDER_SERVICE_URL || 'http://localhost:3003',
+    routes: ['/api/orders']
+  },
+  paymentService: {
+    url: process.env.PAYMENT_SERVICE_URL || 'http://localhost:3004',
+    routes: ['/api/payments']
+  }
+};
+
+// Proxy configuration for each service
+Object.keys(services).forEach(serviceName => {
+  const service = services[serviceName];
+  
+  service.routes.forEach(route => {
+    app.use(route, createProxyMiddleware({
+      target: service.url,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^${route}`]: route
+      },
+      onError: (err, req, res) => {
+        console.error(`Error proxying to ${serviceName}:`, err.message);
+        res.status(503).json({ 
+          error: 'Service temporarily unavailable',
+          service: serviceName
+        });
+      },
+      onProxyReq: (proxyReq, req, res) => {
+        // Add service identification header
+        proxyReq.setHeader('X-Service-Name', serviceName);
+        proxyReq.setHeader('X-Request-ID', req.headers['x-request-id'] || generateRequestId());
+      }
+    }));
+  });
+});
+
+// Request ID generator
+function generateRequestId() {
+  return Math.random().toString(36).substr(2, 9);
+}
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error('Gateway error:', err);
+  res.status(500).json({ 
+    error: 'Internal gateway error',
+    requestId: req.headers['x-request-id']
+  });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ 
+    status: 'healthy', 
+    service: 'api-gateway',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Service health aggregation
+app.get('/health/all', async (req, res) => {
+  const healthChecks = {};
+  
+  for (const [serviceName, service] of Object.entries(services)) {
+    try {
+      const response = await fetch(`${service.url}/health`);
+      healthChecks[serviceName] = {
+        status: response.ok ? 'healthy' : 'unhealthy',
+        url: service.url
+      };
+    } catch (error) {
+      healthChecks[serviceName] = {
+        status: 'unhealthy',
+        error: error.message,
+        url: service.url
+      };
+    }
+  }
+  
+  res.json(healthChecks);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`API Gateway running on port ${PORT}`);
+});
+
+module.exports = app;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Service Communication</h2>
+            <p>
+              Microservices cần communicate với nhau thông qua various patterns như synchronous HTTP calls, 
+              asynchronous messaging, và event-driven architecture.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Service-to-Service Communication
+const axios = require('axios');
+const amqp = require('amqplib');
+
+class ServiceCommunicator {
+  constructor() {
+    this.services = {
+      userService: process.env.USER_SERVICE_URL || 'http://localhost:3001',
+      productService: process.env.PRODUCT_SERVICE_URL || 'http://localhost:3002',
+      orderService: process.env.ORDER_SERVICE_URL || 'http://localhost:3003'
+    };
+    this.rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost';
+  }
+
+  // Synchronous HTTP communication
+  async getUserById(userId) {
+    try {
+      const response = await axios.get(`${this.services.userService}/api/users/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching user:', error.message);
+      throw new Error('User service unavailable');
+    }
+  }
+
+  async createOrder(orderData) {
+    try {
+      // Validate user exists
+      const user = await this.getUserById(orderData.userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      // Validate products
+      const productPromises = orderData.items.map(item => 
+        axios.get(`${this.services.productService}/api/products/${item.productId}`)
+      );
+      const products = await Promise.all(productPromises);
+      
+      // Create order
+      const orderResponse = await axios.post(`${this.services.orderService}/api/orders`, {
+        ...orderData,
+        user: user,
+        products: products.map(p => p.data)
+      });
+
+      // Publish order created event
+      await this.publishEvent('order.created', {
+        orderId: orderResponse.data.id,
+        userId: orderData.userId,
+        totalAmount: orderData.totalAmount
+      });
+
+      return orderResponse.data;
+    } catch (error) {
+      console.error('Error creating order:', error.message);
+      throw error;
+    }
+  }
+
+  // Asynchronous messaging with RabbitMQ
+  async publishEvent(eventType, data) {
+    try {
+      const connection = await amqp.connect(this.rabbitMQUrl);
+      const channel = await connection.createChannel();
+      
+      const exchange = 'events';
+      await channel.assertExchange(exchange, 'topic', { durable: true });
+      
+      const message = JSON.stringify({
+        eventType,
+        data,
+        timestamp: new Date().toISOString(),
+        source: 'order-service'
+      });
+
+      channel.publish(exchange, eventType, Buffer.from(message));
+      console.log(`Published event: ${eventType}`);
+      
+      await channel.close();
+      await connection.close();
+    } catch (error) {
+      console.error('Error publishing event:', error.message);
+    }
+  }
+
+  // Event subscription
+  async subscribeToEvents(eventTypes, handler) {
+    try {
+      const connection = await amqp.connect(this.rabbitMQUrl);
+      const channel = await connection.createChannel();
+      
+      const exchange = 'events';
+      await channel.assertExchange(exchange, 'topic', { durable: true });
+      
+      const queue = await channel.assertQueue('', { exclusive: true });
+      
+      // Bind to multiple event types
+      for (const eventType of eventTypes) {
+        await channel.bindQueue(queue.queue, exchange, eventType);
+      }
+      
+      channel.consume(queue.queue, (msg) => {
+        if (msg) {
+          const event = JSON.parse(msg.content.toString());
+          handler(event);
+          channel.ack(msg);
+        }
+      });
+      
+      console.log(`Subscribed to events: ${eventTypes.join(', ')}`);
+    } catch (error) {
+      console.error('Error subscribing to events:', error.message);
+    }
+  }
+
+  // Circuit breaker pattern
+  async callWithCircuitBreaker(serviceName, operation, fallback) {
+    const circuitBreaker = this.getCircuitBreaker(serviceName);
+    
+    try {
+      return await circuitBreaker.fire(operation);
+    } catch (error) {
+      console.error(`Circuit breaker open for ${serviceName}:`, error.message);
+      return fallback ? fallback() : null;
+    }
+  }
+
+  getCircuitBreaker(serviceName) {
+    // Simple circuit breaker implementation
+    const state = {
+      failures: 0,
+      lastFailureTime: null,
+      state: 'CLOSED' // CLOSED, OPEN, HALF_OPEN
+    };
+
+    return {
+      fire: async (operation) => {
+        if (state.state === 'OPEN') {
+          if (Date.now() - state.lastFailureTime > 60000) { // 1 minute
+            state.state = 'HALF_OPEN';
+          } else {
+            throw new Error('Circuit breaker is OPEN');
+          }
+        }
+
+        try {
+          const result = await operation();
+          state.failures = 0;
+          state.state = 'CLOSED';
+          return result;
+        } catch (error) {
+          state.failures++;
+          state.lastFailureTime = Date.now();
+          
+          if (state.failures >= 5) {
+            state.state = 'OPEN';
+          }
+          
+          throw error;
+        }
+      }
+    };
+  }
+}
+
+// Event-driven architecture example
+class EventHandler {
+  constructor() {
+    this.communicator = new ServiceCommunicator();
+    this.setupEventHandlers();
+  }
+
+  setupEventHandlers() {
+    // Handle order created event
+    this.communicator.subscribeToEvents(['order.created'], (event) => {
+      this.handleOrderCreated(event);
+    });
+
+    // Handle user updated event
+    this.communicator.subscribeToEvents(['user.updated'], (event) => {
+      this.handleUserUpdated(event);
+    });
+  }
+
+  async handleOrderCreated(event) {
+    console.log('Processing order created event:', event);
+    
+    // Update user's order history
+    try {
+      await axios.post(`${this.communicator.services.userService}/api/users/${event.data.userId}/orders`, {
+        orderId: event.data.orderId,
+        totalAmount: event.data.totalAmount,
+        createdAt: event.timestamp
+      });
+    } catch (error) {
+      console.error('Error updating user order history:', error.message);
+    }
+
+    // Send notification
+    await this.sendOrderConfirmation(event.data);
+  }
+
+  async handleUserUpdated(event) {
+    console.log('Processing user updated event:', event);
+    
+    // Update related services if needed
+    // For example, update user info in order service
+  }
+
+  async sendOrderConfirmation(orderData) {
+    // Implementation for sending order confirmation
+    console.log('Sending order confirmation for order:', orderData.orderId);
+  }
+}
+
+module.exports = { ServiceCommunicator, EventHandler };</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Docker Compose cho Microservices</h2>
+            <p>
+              Docker Compose giúp orchestrate multiple microservices và their dependencies.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-yaml"># docker-compose.yml for microservices
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - ORDER_SERVICE_URL=http://order-service:3003
+      - PAYMENT_SERVICE_URL=http://payment-service:3004
+      - JWT_SECRET=your-secret-key
+    depends_on:
+      - user-service
+      - product-service
+      - order-service
+      - payment-service
+    networks:
+      - microservices-network
+
+  # User Service
+  user-service:
+    build: ./user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/users
+      - JWT_SECRET=your-secret-key
+    depends_on:
+      - mongo
+    networks:
+      - microservices-network
+
+  # Product Service
+  product-service:
+    build: ./product-service
+    ports:
+      - "3002:3002"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/products
+    depends_on:
+      - mongo
+    networks:
+      - microservices-network
+
+  # Order Service
+  order-service:
+    build: ./order-service
+    ports:
+      - "3003:3003"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/orders
+      - USER_SERVICE_URL=http://user-service:3001
+      - PRODUCT_SERVICE_URL=http://product-service:3002
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Payment Service
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "3004:3004"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/payments
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - microservices-network
+
+  # Database
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - microservices-network
+
+  # Message Queue
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - microservices-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - microservices-network
+
+  # Monitoring
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - microservices-network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - microservices-network
+
+  # Log aggregation
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - microservices-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.8.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - microservices-network
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:
+
+networks:
+  microservices-network:
+    driver: bridge</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi thiết kế microservices architecture, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Single Responsibility:</strong> Mỗi service nên có một responsibility duy nhất</li>
+              <li><strong>Database per Service:</strong> Mỗi service nên có database riêng</li>
+              <li><strong>API Gateway:</strong> Sử dụng API Gateway làm single entry point</li>
+              <li><strong>Event-driven:</strong> Sử dụng events cho loose coupling</li>
+              <li><strong>Monitoring:</strong> Implement comprehensive monitoring</li>
+              <li><strong>Security:</strong> Implement authentication và authorization</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Microservices architecture cung cấp flexibility và scalability cho modern applications. 
+              Với việc hiểu rõ service communication patterns, API Gateway implementation và monitoring, 
+              bạn có thể xây dựng robust và maintainable microservices systems.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/docker-containerization.jpg" alt="Docker Containerization" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Docker và Containerization</h5>
+                <p class="recent-post-excerpt">Containerization với Docker từ cơ bản đến nâng cao...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/database-design.jpg" alt="Database Design" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Database Design và SQL Optimization</h5>
+                <p class="recent-post-excerpt">Thiết kế database và tối ưu hóa SQL queries hiệu quả...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/react-hooks.jpg" alt="React Hooks" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">React Hooks và Modern Component Development</h5>
+                <p class="recent-post-excerpt">Khám phá React Hooks và cách phát triển components hiện đại...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

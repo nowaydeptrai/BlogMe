@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Design và SQL Optimization - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Database Design và SQL Optimization</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 8 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/database-design.jpg" alt="Database Design và SQL Optimization" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Database design là nền tảng của mọi ứng dụng phần mềm. Việc thiết kế database tốt và tối ưu hóa SQL 
+              queries có thể tạo ra sự khác biệt lớn về hiệu suất. Trong bài viết này, chúng ta sẽ khám phá các nguyên tắc và kỹ thuật quan trọng.
+            </p>
+
+            <h2 class="post-section-title">Database Normalization</h2>
+            <p>
+              Normalization là quá trình tổ chức dữ liệu trong database để giảm redundancy và cải thiện data integrity.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- Unnormalized table (Bad design)
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100),
+    customer_phone VARCHAR(20),
+    product_name VARCHAR(100),
+    product_price DECIMAL(10,2),
+    product_category VARCHAR(50),
+    order_date DATE,
+    quantity INT,
+    total_amount DECIMAL(10,2)
+);
+
+-- First Normal Form (1NF) - Atomic values
+CREATE TABLE customers (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    customer_email VARCHAR(100) UNIQUE NOT NULL,
+    customer_phone VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE products (
+    product_id INT PRIMARY KEY,
+    product_name VARCHAR(100) NOT NULL,
+    product_price DECIMAL(10,2) NOT NULL,
+    category_id INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categories (
+    category_id INT PRIMARY KEY,
+    category_name VARCHAR(50) NOT NULL,
+    description TEXT
+);
+
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    order_date DATE NOT NULL,
+    total_amount DECIMAL(10,2),
+    status VARCHAR(20) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+);
+
+CREATE TABLE order_items (
+    order_item_id INT PRIMARY KEY,
+    order_id INT,
+    product_id INT,
+    quantity INT NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Second Normal Form (2NF) - Remove partial dependencies
+-- Third Normal Form (3NF) - Remove transitive dependencies
+-- Boyce-Codd Normal Form (BCNF) - Every determinant is a candidate key</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Indexing Strategies</h2>
+            <p>
+              Indexes là công cụ quan trọng để tối ưu hóa query performance. Hiểu cách sử dụng indexes hiệu quả là chìa khóa.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- Single column indexes
+CREATE INDEX idx_customer_email ON customers(customer_email);
+CREATE INDEX idx_order_date ON orders(order_date);
+CREATE INDEX idx_product_category ON products(category_id);
+
+-- Composite indexes (order matters!)
+CREATE INDEX idx_customer_orders ON orders(customer_id, order_date);
+CREATE INDEX idx_product_search ON products(category_id, product_name, product_price);
+
+-- Partial indexes (for specific conditions)
+CREATE INDEX idx_active_orders ON orders(order_date) 
+WHERE status = 'active';
+
+-- Covering indexes (include all needed columns)
+CREATE INDEX idx_order_details ON order_items(order_id, product_id, quantity, unit_price);
+
+-- Index usage examples
+-- This query will use idx_customer_email
+SELECT * FROM customers WHERE customer_email = 'john@example.com';
+
+-- This query will use idx_customer_orders
+SELECT * FROM orders 
+WHERE customer_id = 123 
+AND order_date >= '2024-01-01';
+
+-- This query will use idx_product_search
+SELECT * FROM products 
+WHERE category_id = 5 
+AND product_name LIKE 'Laptop%'
+ORDER BY product_price;
+
+-- Analyze query performance
+EXPLAIN ANALYZE 
+SELECT c.customer_name, o.order_date, o.total_amount
+FROM customers c
+JOIN orders o ON c.customer_id = o.customer_id
+WHERE c.customer_email = 'john@example.com'
+AND o.order_date >= '2024-01-01'
+ORDER BY o.order_date DESC;
+
+-- Index maintenance
+-- Check index usage
+SELECT 
+    schemaname,
+    tablename,
+    indexname,
+    idx_scan,
+    idx_tup_read,
+    idx_tup_fetch
+FROM pg_stat_user_indexes
+ORDER BY idx_scan DESC;
+
+-- Rebuild indexes if needed
+REINDEX INDEX idx_customer_email;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Query Optimization</h2>
+            <p>
+              Tối ưu hóa SQL queries là nghệ thuật cân bằng giữa readability và performance.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- Bad query (N+1 problem)
+-- This will execute 1 query + N queries for each order
+SELECT * FROM orders WHERE customer_id = 123;
+-- Then for each order:
+SELECT * FROM order_items WHERE order_id = ?;
+
+-- Good query (JOIN)
+SELECT 
+    o.order_id,
+    o.order_date,
+    o.total_amount,
+    oi.product_id,
+    p.product_name,
+    oi.quantity,
+    oi.unit_price
+FROM orders o
+JOIN order_items oi ON o.order_id = oi.order_id
+JOIN products p ON oi.product_id = p.product_id
+WHERE o.customer_id = 123
+ORDER BY o.order_date DESC;
+
+-- Window functions for analytics
+SELECT 
+    customer_id,
+    order_date,
+    total_amount,
+    SUM(total_amount) OVER (
+        PARTITION BY customer_id 
+        ORDER BY order_date 
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS running_total,
+    ROW_NUMBER() OVER (
+        PARTITION BY customer_id 
+        ORDER BY total_amount DESC
+    ) AS order_rank
+FROM orders
+WHERE order_date >= '2024-01-01';
+
+-- Common Table Expressions (CTEs)
+WITH monthly_sales AS (
+    SELECT 
+        DATE_TRUNC('month', order_date) AS month,
+        COUNT(*) AS order_count,
+        SUM(total_amount) AS total_sales
+    FROM orders
+    WHERE order_date >= '2024-01-01'
+    GROUP BY DATE_TRUNC('month', order_date)
+),
+customer_metrics AS (
+    SELECT 
+        customer_id,
+        COUNT(*) AS total_orders,
+        AVG(total_amount) AS avg_order_value,
+        MAX(order_date) AS last_order_date
+    FROM orders
+    GROUP BY customer_id
+)
+SELECT 
+    ms.month,
+    ms.order_count,
+    ms.total_sales,
+    COUNT(DISTINCT cm.customer_id) AS active_customers
+FROM monthly_sales ms
+LEFT JOIN orders o ON DATE_TRUNC('month', o.order_date) = ms.month
+LEFT JOIN customer_metrics cm ON o.customer_id = cm.customer_id
+GROUP BY ms.month, ms.order_count, ms.total_sales
+ORDER BY ms.month;
+
+-- Subquery optimization
+-- Bad: Correlated subquery
+SELECT 
+    c.customer_name,
+    (SELECT COUNT(*) FROM orders o WHERE o.customer_id = c.customer_id) AS order_count
+FROM customers c;
+
+-- Good: JOIN with aggregation
+SELECT 
+    c.customer_name,
+    COUNT(o.order_id) AS order_count
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name;
+
+-- EXISTS vs IN
+-- Use EXISTS for better performance
+SELECT c.customer_name
+FROM customers c
+WHERE EXISTS (
+    SELECT 1 FROM orders o 
+    WHERE o.customer_id = c.customer_id 
+    AND o.order_date >= '2024-01-01'
+);
+
+-- Avoid SELECT *
+SELECT 
+    customer_id,
+    customer_name,
+    customer_email
+FROM customers
+WHERE customer_id = 123;
+
+-- Use LIMIT for pagination
+SELECT 
+    order_id,
+    order_date,
+    total_amount
+FROM orders
+ORDER BY order_date DESC
+LIMIT 20 OFFSET 40; -- Page 3, 20 items per page</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Database Transactions</h2>
+            <p>
+              Transactions đảm bảo data consistency và integrity trong multi-user environments.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- ACID Properties
+-- Atomicity: All or nothing
+-- Consistency: Valid state transitions
+-- Isolation: Concurrent transactions don't interfere
+-- Durability: Committed changes persist
+
+-- Basic transaction
+BEGIN;
+
+INSERT INTO customers (customer_name, customer_email) 
+VALUES ('John Doe', 'john@example.com');
+
+INSERT INTO orders (customer_id, order_date, total_amount)
+VALUES (LAST_INSERT_ID(), CURDATE(), 99.99);
+
+COMMIT;
+
+-- Transaction with error handling
+BEGIN;
+
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+    ROLLBACK;
+    RESIGNAL;
+END;
+
+INSERT INTO customers (customer_name, customer_email) 
+VALUES ('Jane Smith', 'jane@example.com');
+
+INSERT INTO orders (customer_id, order_date, total_amount)
+VALUES (LAST_INSERT_ID(), CURDATE(), 149.99);
+
+COMMIT;
+
+-- Savepoints for partial rollback
+BEGIN;
+
+INSERT INTO customers (customer_name, customer_email) 
+VALUES ('Bob Johnson', 'bob@example.com');
+
+SAVEPOINT sp1;
+
+INSERT INTO orders (customer_id, order_date, total_amount)
+VALUES (LAST_INSERT_ID(), CURDATE(), 199.99);
+
+-- If something goes wrong, rollback to savepoint
+-- ROLLBACK TO sp1;
+
+COMMIT;
+
+-- Locking strategies
+-- Pessimistic locking
+SELECT * FROM products WHERE product_id = 123 FOR UPDATE;
+
+-- Optimistic locking with version
+UPDATE products 
+SET product_name = 'New Name', version = version + 1
+WHERE product_id = 123 AND version = 5;
+
+-- If version doesn't match, update fails (someone else modified it)
+
+-- Deadlock prevention
+-- Always acquire locks in the same order
+-- Keep transactions short
+-- Use appropriate isolation levels
+
+-- Isolation levels
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Database Monitoring và Performance</h2>
+            <p>
+              Monitoring database performance là chìa khóa để maintain optimal performance.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- Query performance analysis
+-- Enable query logging
+SET log_statement = 'all';
+SET log_min_duration_statement = 1000; -- Log queries > 1 second
+
+-- Find slow queries
+SELECT 
+    query,
+    calls,
+    total_time,
+    mean_time,
+    rows
+FROM pg_stat_statements
+ORDER BY total_time DESC
+LIMIT 10;
+
+-- Table statistics
+SELECT 
+    schemaname,
+    tablename,
+    n_tup_ins AS inserts,
+    n_tup_upd AS updates,
+    n_tup_del AS deletes,
+    n_live_tup AS live_tuples,
+    n_dead_tup AS dead_tuples
+FROM pg_stat_user_tables
+ORDER BY n_live_tup DESC;
+
+-- Index usage statistics
+SELECT 
+    schemaname,
+    tablename,
+    indexname,
+    idx_scan,
+    idx_tup_read,
+    idx_tup_fetch,
+    CASE 
+        WHEN idx_scan = 0 THEN 'UNUSED'
+        WHEN idx_tup_read / idx_scan > 100 THEN 'INEFFICIENT'
+        ELSE 'GOOD'
+    END AS status
+FROM pg_stat_user_indexes
+ORDER BY idx_scan DESC;
+
+-- Database size monitoring
+SELECT 
+    pg_database.datname,
+    pg_size_pretty(pg_database_size(pg_database.datname)) AS size
+FROM pg_database
+ORDER BY pg_database_size(pg_database.datname) DESC;
+
+-- Table size analysis
+SELECT 
+    schemaname,
+    tablename,
+    pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename)) AS size,
+    pg_size_pretty(pg_relation_size(schemaname||'.'||tablename)) AS table_size,
+    pg_size_pretty(pg_total_relation_size(schemaname||'.'||tablename) - 
+                   pg_relation_size(schemaname||'.'||tablename)) AS index_size
+FROM pg_tables
+WHERE schemaname = 'public'
+ORDER BY pg_total_relation_size(schemaname||'.'||tablename) DESC;
+
+-- Connection monitoring
+SELECT 
+    pid,
+    usename,
+    application_name,
+    client_addr,
+    state,
+    query_start,
+    query
+FROM pg_stat_activity
+WHERE state = 'active'
+ORDER BY query_start;
+
+-- Lock monitoring
+SELECT 
+    l.locktype,
+    l.database,
+    l.relation,
+    l.page,
+    l.tuple,
+    l.virtualxid,
+    l.transactionid,
+    l.classid,
+    l.objid,
+    l.objsubid,
+    l.virtualtransaction,
+    l.pid,
+    l.mode,
+    l.granted,
+    a.usename,
+    a.query,
+    a.query_start,
+    age(now(), a.query_start) AS "age"
+FROM pg_locks l
+LEFT JOIN pg_stat_activity a ON l.pid = a.pid
+WHERE NOT l.granted
+ORDER BY a.query_start;
+
+-- Automated maintenance
+-- Update table statistics
+ANALYZE customers;
+ANALYZE orders;
+ANALYZE products;
+
+-- Rebuild indexes
+REINDEX TABLE customers;
+REINDEX TABLE orders;
+
+-- Vacuum to reclaim space
+VACUUM ANALYZE customers;
+VACUUM ANALYZE orders;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Advanced Database Patterns</h2>
+            <p>
+              Các patterns nâng cao giúp xử lý các tình huống phức tạp trong database design.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-sql">-- Soft deletes pattern
+ALTER TABLE customers ADD COLUMN deleted_at TIMESTAMP NULL;
+ALTER TABLE customers ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE;
+
+-- Soft delete a customer
+UPDATE customers 
+SET deleted_at = NOW(), is_deleted = TRUE 
+WHERE customer_id = 123;
+
+-- Query active customers only
+SELECT * FROM customers 
+WHERE is_deleted = FALSE OR is_deleted IS NULL;
+
+-- Audit trail pattern
+CREATE TABLE audit_log (
+    audit_id SERIAL PRIMARY KEY,
+    table_name VARCHAR(50) NOT NULL,
+    record_id INT NOT NULL,
+    action VARCHAR(10) NOT NULL, -- INSERT, UPDATE, DELETE
+    old_values JSONB,
+    new_values JSONB,
+    changed_by VARCHAR(100),
+    changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger for audit logging
+CREATE OR REPLACE FUNCTION audit_trigger_function()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF TG_OP = 'DELETE' THEN
+        INSERT INTO audit_log (table_name, record_id, action, old_values, changed_by)
+        VALUES (TG_TABLE_NAME, OLD.customer_id, TG_OP, row_to_json(OLD), current_user);
+        RETURN OLD;
+    ELSIF TG_OP = 'UPDATE' THEN
+        INSERT INTO audit_log (table_name, record_id, action, old_values, new_values, changed_by)
+        VALUES (TG_TABLE_NAME, NEW.customer_id, TG_OP, row_to_json(OLD), row_to_json(NEW), current_user);
+        RETURN NEW;
+    ELSIF TG_OP = 'INSERT' THEN
+        INSERT INTO audit_log (table_name, record_id, action, new_values, changed_by)
+        VALUES (TG_TABLE_NAME, NEW.customer_id, TG_OP, row_to_json(NEW), current_user);
+        RETURN NEW;
+    END IF;
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER customers_audit_trigger
+    AFTER INSERT OR UPDATE OR DELETE ON customers
+    FOR EACH ROW EXECUTE FUNCTION audit_trigger_function();
+
+-- Event sourcing pattern
+CREATE TABLE events (
+    event_id SERIAL PRIMARY KEY,
+    aggregate_id VARCHAR(100) NOT NULL,
+    event_type VARCHAR(50) NOT NULL,
+    event_data JSONB NOT NULL,
+    version INT NOT NULL,
+    occurred_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Store events instead of direct state changes
+INSERT INTO events (aggregate_id, event_type, event_data, version)
+VALUES ('customer-123', 'CustomerCreated', '{"name": "John Doe", "email": "john@example.com"}', 1);
+
+INSERT INTO events (aggregate_id, event_type, event_data, version)
+VALUES ('customer-123', 'CustomerEmailChanged', '{"email": "john.doe@example.com"}', 2);
+
+-- Rebuild current state from events
+WITH customer_events AS (
+    SELECT 
+        aggregate_id,
+        event_data,
+        version,
+        ROW_NUMBER() OVER (PARTITION BY aggregate_id ORDER BY version DESC) as rn
+    FROM events
+    WHERE aggregate_id = 'customer-123'
+)
+SELECT 
+    aggregate_id,
+    event_data->>'name' as name,
+    event_data->>'email' as email,
+    version
+FROM customer_events
+WHERE rn = 1;
+
+-- Partitioning for large tables
+-- Range partitioning by date
+CREATE TABLE orders_2024 (
+    LIKE orders INCLUDING ALL
+) PARTITION OF orders
+FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
+
+CREATE TABLE orders_2025 (
+    LIKE orders INCLUDING ALL
+) PARTITION OF orders
+FOR VALUES FROM ('2025-01-01') TO ('2026-01-01');
+
+-- Hash partitioning
+CREATE TABLE customers_partitioned (
+    customer_id INT,
+    customer_name VARCHAR(100),
+    customer_email VARCHAR(100)
+) PARTITION BY HASH (customer_id);
+
+CREATE TABLE customers_partitioned_0 PARTITION OF customers_partitioned
+FOR VALUES WITH (modulus 4, remainder 0);
+
+CREATE TABLE customers_partitioned_1 PARTITION OF customers_partitioned
+FOR VALUES WITH (modulus 4, remainder 1);
+
+-- Materialized views for reporting
+CREATE MATERIALIZED VIEW monthly_sales_summary AS
+SELECT 
+    DATE_TRUNC('month', order_date) AS month,
+    COUNT(*) AS total_orders,
+    SUM(total_amount) AS total_sales,
+    AVG(total_amount) AS avg_order_value,
+    COUNT(DISTINCT customer_id) AS unique_customers
+FROM orders
+GROUP BY DATE_TRUNC('month', order_date)
+ORDER BY month;
+
+-- Refresh materialized view
+REFRESH MATERIALIZED VIEW monthly_sales_summary;
+
+-- Full-text search
+CREATE INDEX idx_products_search ON products 
+USING gin(to_tsvector('english', product_name || ' ' || COALESCE(description, '')));
+
+-- Search products
+SELECT product_id, product_name, 
+       ts_rank(to_tsvector('english', product_name), query) as rank
+FROM products, to_tsquery('english', 'laptop & gaming') query
+WHERE to_tsvector('english', product_name) @@ query
+ORDER BY rank DESC;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi thiết kế và tối ưu hóa database, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Normalize properly:</strong> Balance normalization với performance</li>
+              <li><strong>Index strategically:</strong> Index columns thường được query</li>
+              <li><strong>Monitor performance:</strong> Regular monitoring và analysis</li>
+              <li><strong>Use transactions:</strong> Ensure data consistency</li>
+              <li><strong>Plan for scale:</strong> Design for future growth</li>
+              <li><strong>Backup regularly:</strong> Implement proper backup strategies</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Database design và SQL optimization là những kỹ năng cốt lõi của backend development. 
+              Với việc hiểu rõ normalization, indexing, query optimization và monitoring, 
+              bạn có thể xây dựng các hệ thống database hiệu quả và scalable.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">JavaScript ES6+ và Modern Web Development</h5>
+                <p class="recent-post-excerpt">Khám phá các tính năng mới của JavaScript ES6+...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/react-hooks.jpg" alt="React Hooks" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">React Hooks và Modern Component Development</h5>
+                <p class="recent-post-excerpt">Khám phá React Hooks và cách phát triển components hiện đại...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

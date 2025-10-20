@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Node.js và Real-time Web Applications - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Node.js và Real-time Web Applications</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 12 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/nodejs-realtime.jpg" alt="Node.js Real-time Applications" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Node.js đã cách mạng hóa cách chúng ta xây dựng web applications với khả năng xử lý real-time 
+              mạnh mẽ. Trong bài viết này, chúng ta sẽ khám phá cách tạo ra các ứng dụng real-time với Node.js và Socket.io.
+            </p>
+
+            <h2 class="post-section-title">Node.js Event Loop</h2>
+            <p>
+              Node.js sử dụng Event Loop để xử lý các tác vụ bất đồng bộ một cách hiệu quả. 
+              Hiểu Event Loop là chìa khóa để viết code Node.js hiệu quả.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Event Loop Example
+console.log('1. Start');
+
+// Macro task
+setTimeout(() => {
+    console.log('2. setTimeout');
+}, 0);
+
+// Micro task
+Promise.resolve().then(() => {
+    console.log('3. Promise');
+});
+
+// Macro task
+setImmediate(() => {
+    console.log('4. setImmediate');
+});
+
+// Micro task
+process.nextTick(() => {
+    console.log('5. nextTick');
+});
+
+console.log('6. End');
+
+// Output:
+// 1. Start
+// 6. End
+// 5. nextTick
+// 3. Promise
+// 2. setTimeout
+// 4. setImmediate
+
+// Event Loop Phases:
+// 1. Timers: setTimeout, setInterval
+// 2. Pending callbacks: I/O callbacks
+// 3. Idle, prepare: Internal use
+// 4. Poll: Fetch new I/O events
+// 5. Check: setImmediate callbacks
+// 6. Close callbacks: socket.on('close', ...)</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Express.js Server Setup</h2>
+            <p>
+              Express.js là framework web phổ biến nhất cho Node.js, cung cấp cách đơn giản để tạo web server.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const cors = require('cors');
+const path = require('path');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/api/status', (req, res) => {
+    res.json({
+        status: 'Server is running',
+        timestamp: new Date().toISOString(),
+        connections: io.engine.clientsCount
+    });
+});
+
+// WebSocket connection handling
+io.on('connection', (socket) => {
+    console.log('User connected:', socket.id);
+    
+    // Send welcome message
+    socket.emit('welcome', {
+        message: 'Welcome to the real-time server!',
+        userId: socket.id
+    });
+    
+    // Handle chat messages
+    socket.on('chat-message', (data) => {
+        console.log('Message received:', data);
+        
+        // Broadcast to all clients
+        io.emit('chat-message', {
+            id: socket.id,
+            message: data.message,
+            timestamp: new Date().toISOString()
+        });
+    });
+    
+    // Handle typing indicator
+    socket.on('typing', (data) => {
+        socket.broadcast.emit('user-typing', {
+            userId: socket.id,
+            isTyping: data.isTyping
+        });
+    });
+    
+    // Handle disconnect
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id);
+        io.emit('user-disconnected', socket.id);
+    });
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Real-time Chat Application</h2>
+            <p>
+              Tạo một ứng dụng chat real-time hoàn chỉnh với Socket.io, bao gồm rooms, private messages và file sharing.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Advanced Chat Server
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
+
+// File upload configuration
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage });
+
+// Store active users and rooms
+const users = new Map();
+const rooms = new Map();
+
+// Socket.io connection handling
+io.on('connection', (socket) => {
+    console.log('User connected:', socket.id);
+    
+    // User joins with username
+    socket.on('join-user', (data) => {
+        const { username, avatar } = data;
+        users.set(socket.id, { username, avatar, socketId: socket.id });
+        
+        socket.emit('user-joined', {
+            message: `Welcome ${username}!`,
+            userId: socket.id
+        });
+        
+        // Notify others about new user
+        socket.broadcast.emit('user-online', {
+            username,
+            userId: socket.id
+        });
+        
+        // Send current online users
+        socket.emit('online-users', Array.from(users.values()));
+    });
+    
+    // Join room
+    socket.on('join-room', (data) => {
+        const { roomName, username } = data;
+        socket.join(roomName);
+        
+        if (!rooms.has(roomName)) {
+            rooms.set(roomName, []);
+        }
+        
+        rooms.get(roomName).push({ username, socketId: socket.id });
+        
+        socket.to(roomName).emit('user-joined-room', {
+            username,
+            roomName
+        });
+        
+        socket.emit('room-joined', {
+            roomName,
+            users: rooms.get(roomName)
+        });
+    });
+    
+    // Leave room
+    socket.on('leave-room', (data) => {
+        const { roomName } = data;
+        socket.leave(roomName);
+        
+        if (rooms.has(roomName)) {
+            rooms.set(roomName, 
+                rooms.get(roomName).filter(user => user.socketId !== socket.id)
+            );
+        }
+        
+        socket.to(roomName).emit('user-left-room', {
+            userId: socket.id
+        });
+    });
+    
+    // Send message to room
+    socket.on('room-message', (data) => {
+        const { roomName, message, messageType = 'text' } = data;
+        const user = users.get(socket.id);
+        
+        if (user) {
+            const messageData = {
+                id: Date.now(),
+                username: user.username,
+                message,
+                messageType,
+                timestamp: new Date().toISOString(),
+                roomName
+            };
+            
+            io.to(roomName).emit('room-message', messageData);
+        }
+    });
+    
+    // Private message
+    socket.on('private-message', (data) => {
+        const { targetUserId, message } = data;
+        const sender = users.get(socket.id);
+        
+        if (sender) {
+            const messageData = {
+                id: Date.now(),
+                from: sender.username,
+                message,
+                timestamp: new Date().toISOString()
+            };
+            
+            socket.to(targetUserId).emit('private-message', messageData);
+            socket.emit('private-message-sent', messageData);
+        }
+    });
+    
+    // Typing indicator
+    socket.on('typing', (data) => {
+        const { roomName, isTyping } = data;
+        const user = users.get(socket.id);
+        
+        if (user) {
+            socket.to(roomName).emit('user-typing', {
+                username: user.username,
+                isTyping
+            });
+        }
+    });
+    
+    // File sharing
+    socket.on('file-share', (data) => {
+        const { roomName, fileName, fileSize, fileType } = data;
+        const user = users.get(socket.id);
+        
+        if (user) {
+            const fileData = {
+                id: Date.now(),
+                username: user.username,
+                fileName,
+                fileSize,
+                fileType,
+                timestamp: new Date().toISOString(),
+                roomName
+            };
+            
+            io.to(roomName).emit('file-shared', fileData);
+        }
+    });
+    
+    // Disconnect handling
+    socket.on('disconnect', () => {
+        const user = users.get(socket.id);
+        
+        if (user) {
+            console.log('User disconnected:', user.username);
+            
+            // Remove from all rooms
+            rooms.forEach((roomUsers, roomName) => {
+                const updatedUsers = roomUsers.filter(u => u.socketId !== socket.id);
+                rooms.set(roomName, updatedUsers);
+                
+                socket.to(roomName).emit('user-left-room', {
+                    username: user.username
+                });
+            });
+            
+            // Remove from users map
+            users.delete(socket.id);
+            
+            // Notify others
+            socket.broadcast.emit('user-offline', {
+                username: user.username
+            });
+        }
+    });
+});
+
+// File upload endpoint
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
+    res.json({
+        filename: req.file.filename,
+        originalName: req.file.originalname,
+        size: req.file.size,
+        path: req.file.path
+    });
+});
+
+// Serve uploaded files
+app.use('/uploads', express.static('uploads'));
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Real-time chat server running on port ${PORT}`);
+});</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Client-side Implementation</h2>
+            <p>
+              Phía client sử dụng Socket.io client để kết nối và tương tác với server real-time.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-html"><!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .chat-container {
+            height: 500px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 5px;
+        }
+        .message.own {
+            background-color: #007bff;
+            color: white;
+            margin-left: 20%;
+        }
+        .message.other {
+            background-color: #f8f9fa;
+            margin-right: 20%;
+        }
+        .typing-indicator {
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Real-time Chat</h4>
+                        <div id="online-users"></div>
+                    </div>
+                    <div class="card-body">
+                        <div id="chat-container" class="chat-container"></div>
+                        <div id="typing-indicator" class="typing-indicator"></div>
+                        <div class="input-group">
+                            <input type="text" id="message-input" class="form-control" placeholder="Type a message...">
+                            <button id="send-button" class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Rooms</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <input type="text" id="room-input" class="form-control" placeholder="Room name">
+                            <button id="join-room" class="btn btn-success mt-2">Join Room</button>
+                        </div>
+                        <div id="current-rooms"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Socket.io client setup
+        const socket = io();
+        
+        // DOM elements
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const roomInput = document.getElementById('room-input');
+        const joinRoomButton = document.getElementById('join-room');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const onlineUsers = document.getElementById('online-users');
+        const currentRooms = document.getElementById('current-rooms');
+        
+        let currentRoom = null;
+        let isTyping = false;
+        let typingTimer = null;
+        
+        // User authentication
+        const username = prompt('Enter your username:');
+        const avatar = `https://ui-avatars.com/api/?name=${username}&background=random`;
+        
+        socket.emit('join-user', { username, avatar });
+        
+        // Socket event listeners
+        socket.on('welcome', (data) => {
+            addMessage('System', data.message, 'system');
+        });
+        
+        socket.on('user-joined', (data) => {
+            addMessage('System', data.message, 'system');
+        });
+        
+        socket.on('user-online', (data) => {
+            addMessage('System', `${data.username} is now online`, 'system');
+            updateOnlineUsers();
+        });
+        
+        socket.on('user-offline', (data) => {
+            addMessage('System', `${data.username} went offline`, 'system');
+            updateOnlineUsers();
+        });
+        
+        socket.on('online-users', (users) => {
+            displayOnlineUsers(users);
+        });
+        
+        socket.on('room-joined', (data) => {
+            currentRoom = data.roomName;
+            addMessage('System', `Joined room: ${data.roomName}`, 'system');
+            displayRoomUsers(data.users);
+        });
+        
+        socket.on('user-joined-room', (data) => {
+            addMessage('System', `${data.username} joined the room`, 'system');
+        });
+        
+        socket.on('user-left-room', (data) => {
+            if (data.username) {
+                addMessage('System', `${data.username} left the room`, 'system');
+            }
+        });
+        
+        socket.on('room-message', (data) => {
+            addMessage(data.username, data.message, 'other');
+        });
+        
+        socket.on('private-message', (data) => {
+            addMessage(`Private from ${data.from}`, data.message, 'private');
+        });
+        
+        socket.on('user-typing', (data) => {
+            showTypingIndicator(data.username, data.isTyping);
+        });
+        
+        socket.on('file-shared', (data) => {
+            addMessage(data.username, `Shared file: ${data.fileName}`, 'file');
+        });
+        
+        // Event handlers
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        messageInput.addEventListener('input', handleTyping);
+        
+        joinRoomButton.addEventListener('click', joinRoom);
+        
+        // Functions
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message && currentRoom) {
+                socket.emit('room-message', {
+                    roomName: currentRoom,
+                    message
+                });
+                addMessage('You', message, 'own');
+                messageInput.value = '';
+                stopTyping();
+            }
+        }
+        
+        function addMessage(sender, message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = `
+                <strong>${sender}:</strong> ${message}
+                <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function handleTyping() {
+            if (!isTyping && currentRoom) {
+                isTyping = true;
+                socket.emit('typing', { roomName: currentRoom, isTyping: true });
+            }
+            
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                stopTyping();
+            }, 1000);
+        }
+        
+        function stopTyping() {
+            if (isTyping && currentRoom) {
+                isTyping = false;
+                socket.emit('typing', { roomName: currentRoom, isTyping: false });
+            }
+        }
+        
+        function showTypingIndicator(username, isTyping) {
+            if (isTyping) {
+                typingIndicator.textContent = `${username} is typing...`;
+            } else {
+                typingIndicator.textContent = '';
+            }
+        }
+        
+        function joinRoom() {
+            const roomName = roomInput.value.trim();
+            if (roomName) {
+                socket.emit('join-room', { roomName, username });
+                roomInput.value = '';
+            }
+        }
+        
+        function updateOnlineUsers() {
+            socket.emit('get-online-users');
+        }
+        
+        function displayOnlineUsers(users) {
+            onlineUsers.innerHTML = `
+                <strong>Online Users (${users.length}):</strong><br>
+                ${users.map(user => user.username).join(', ')}
+            `;
+        }
+        
+        function displayRoomUsers(users) {
+            currentRooms.innerHTML = `
+                <strong>Room Users:</strong><br>
+                ${users.map(user => user.username).join(', ')}
+            `;
+        }
+    </script>
+</body>
+</html></code></pre>
+            </div>
+
+            <h2 class="post-section-title">Performance Optimization</h2>
+            <p>
+              Tối ưu hóa hiệu suất cho ứng dụng Node.js real-time với clustering, Redis và monitoring.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Clustering for better performance
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+const redis = require('redis');
+
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
+    
+    // Fork workers
+    for (let i = 0; i < numCPUs; i++) {
+        cluster.fork();
+    }
+    
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`Worker ${worker.process.pid} died`);
+        cluster.fork(); // Restart worker
+    });
+} else {
+    // Worker process
+    const express = require('express');
+    const http = require('http');
+    const socketIo = require('socket.io');
+    const redisAdapter = require('socket.io-redis');
+    
+    const app = express();
+    const server = http.createServer(app);
+    const io = socketIo(server);
+    
+    // Redis adapter for scaling
+    const redisClient = redis.createClient({
+        host: 'localhost',
+        port: 6379
+    });
+    
+    io.adapter(redisAdapter({ 
+        host: 'localhost', 
+        port: 6379 
+    }));
+    
+    // Rate limiting
+    const rateLimit = new Map();
+    const RATE_LIMIT = 10; // messages per minute
+    const RATE_WINDOW = 60000; // 1 minute
+    
+    io.on('connection', (socket) => {
+        console.log(`Worker ${process.pid} handling connection: ${socket.id}`);
+        
+        // Rate limiting middleware
+        socket.use((packet, next) => {
+            const userId = socket.id;
+            const now = Date.now();
+            
+            if (!rateLimit.has(userId)) {
+                rateLimit.set(userId, { count: 1, resetTime: now + RATE_WINDOW });
+                return next();
+            }
+            
+            const userLimit = rateLimit.get(userId);
+            
+            if (now > userLimit.resetTime) {
+                rateLimit.set(userId, { count: 1, resetTime: now + RATE_WINDOW });
+                return next();
+            }
+            
+            if (userLimit.count >= RATE_LIMIT) {
+                return next(new Error('Rate limit exceeded'));
+            }
+            
+            userLimit.count++;
+            next();
+        });
+        
+        // Connection handling
+        socket.on('join-room', (data) => {
+            socket.join(data.roomName);
+            socket.to(data.roomName).emit('user-joined', {
+                username: data.username,
+                roomName: data.roomName
+            });
+        });
+        
+        socket.on('message', (data) => {
+            // Store message in Redis
+            const messageData = {
+                id: Date.now(),
+                username: data.username,
+                message: data.message,
+                roomName: data.roomName,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in Redis
+            redisClient.lpush(`messages:${data.roomName}`, JSON.stringify(messageData));
+            redisClient.ltrim(`messages:${data.roomName}`, 0, 99); // Keep last 100 messages
+            
+            // Broadcast to room
+            io.to(data.roomName).emit('message', messageData);
+        });
+        
+        socket.on('disconnect', () => {
+            console.log(`Worker ${process.pid} handling disconnect: ${socket.id}`);
+        });
+    });
+    
+    // Health check endpoint
+    app.get('/health', (req, res) => {
+        res.json({
+            status: 'healthy',
+            pid: process.pid,
+            uptime: process.uptime(),
+            memory: process.memoryUsage(),
+            connections: io.engine.clientsCount
+        });
+    });
+    
+    const PORT = process.env.PORT || 3000;
+    server.listen(PORT, () => {
+        console.log(`Worker ${process.pid} started on port ${PORT}`);
+    });
+}
+
+// Monitoring with Prometheus
+const prometheus = require('prom-client');
+const register = new prometheus.Registry();
+
+// Custom metrics
+const connectionsGauge = new prometheus.Gauge({
+    name: 'socket_connections_total',
+    help: 'Total number of socket connections',
+    registers: [register]
+});
+
+const messagesCounter = new prometheus.Counter({
+    name: 'messages_total',
+    help: 'Total number of messages sent',
+    labelNames: ['room'],
+    registers: [register]
+});
+
+const responseTimeHistogram = new prometheus.Histogram({
+    name: 'response_time_seconds',
+    help: 'Response time in seconds',
+    labelNames: ['method', 'route'],
+    registers: [register]
+});
+
+// Expose metrics endpoint
+app.get('/metrics', (req, res) => {
+    res.set('Content-Type', register.contentType);
+    res.end(register.metrics());
+});
+
+// Update metrics
+setInterval(() => {
+    connectionsGauge.set(io.engine.clientsCount);
+}, 5000);</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi phát triển ứng dụng Node.js real-time, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Use clustering:</strong> Tận dụng tất cả CPU cores</li>
+              <li><strong>Implement rate limiting:</strong> Bảo vệ server khỏi spam</li>
+              <li><strong>Use Redis adapter:</strong> Scale horizontal với multiple servers</li>
+              <li><strong>Monitor performance:</strong> Sử dụng monitoring tools</li>
+              <li><strong>Handle errors gracefully:</strong> Implement proper error handling</li>
+              <li><strong>Optimize memory usage:</strong> Clean up unused data structures</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Node.js và Socket.io cung cấp nền tảng mạnh mẽ để xây dựng các ứng dụng real-time. 
+              Với việc hiểu rõ Event Loop, clustering, và các kỹ thuật tối ưu hóa, 
+              bạn có thể tạo ra các ứng dụng real-time hiệu quả và có thể scale.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">JavaScript ES6+ và Modern Web Development</h5>
+                <p class="recent-post-excerpt">Khám phá các tính năng mới của JavaScript ES6+...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/tcp-http-protocol.jpg" alt="TCP/IP Protocol" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Mạng máy tính: TCP/IP và HTTP Protocol</h5>
+                <p class="recent-post-excerpt">Tìm hiểu sâu về giao thức TCP/IP, HTTP/HTTPS...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

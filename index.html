@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Noway | Developer Portfolio</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+	<!-- 🌙 Menu -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+	<a class="navbar-brand fw-bold text-primary" href="#">Noway</a>
+	<button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+		<i class="bi bi-list fs-2 text-light"></i>
+	</button>
+
+	<div class="collapse navbar-collapse justify-content-end" id="menu">
+		<ul class="navbar-nav gap-3 align-items-center">
+		<li class="nav-item"><a class="nav-link" href="#about">Giới thiệu</a></li>
+		<li class="nav-item"><a class="nav-link" href="#posts">Blog</a></li>
+		<li class="nav-item"><a class="nav-link" href="certificates.html">Chứng chỉ</a></li>
+		<li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+		<li class="nav-item">
+			<a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+			<i class="bi bi-github"></i> GitHub
+			</a>
+		</li>
+		<!-- 🌓 Nút chuyển chế độ sáng/tối -->
+		<li class="nav-item">
+			<button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+			<i class="bi bi-moon-fill" id="theme-icon"></i>
+			</button>
+		</li>
+		</ul>
+	</div>
+	</nav>
+
+  <!-- 🧑‍💻 Hero Section -->
+  <section id="about" class="hero-section container py-5 mt-5 animate__animated animate__fadeInUp">
+    <div class="row align-items-center g-5">
+      <!-- Ảnh -->
+      <div class="col-md-5 text-center animate__animated animate__zoomIn">
+        <div class="profile-glow mx-auto" id="profileContainer">
+          <img src="assets/images/ava/noway.jpg" alt="Noway Developer" class="img-fluid rounded-circle shadow-lg border border-primary border-3" id="profileImage">
+        </div>
+      </div>
+
+      <!-- Giới thiệu -->
+      <div class="col-md-7 text-light">
+        <h2 class="fw-bold text-primary mb-3">Xin chào, tôi là <span class="text-gradient typewriter-text" data-text="Noway">Noway</span></h2>
+        <h4 class="text-secondary mb-3 typewriter-text" data-text="Full-Stack Developer · Network Engineer">Full-Stack Developer · Network Engineer</h4>
+        <p class="lead text-light typewriter-text" data-text="Tôi là Nguyen Tan Dung (Noway) — lập trình viên full-stack đam mê sáng tạo và tối ưu hoá hệ thống. Với nền tảng vững chắc trong phát triển mạng máy tính và xây dựng ứng dụng web đa tầng, tôi luôn hướng tới việc kết hợp kỹ thuật & trải nghiệm người dùng để tạo ra sản phẩm hoàn thiện nhất.">
+          Tôi là <strong>Nguyen Tan Dung (Noway)</strong> — lập trình viên full-stack đam mê sáng tạo và tối ưu hoá hệ thống.
+          Với nền tảng vững chắc trong <strong>phát triển mạng máy tính</strong> và <strong>xây dựng ứng dụng web đa tầng</strong>,
+          tôi luôn hướng tới việc kết hợp kỹ thuật & trải nghiệm người dùng để tạo ra sản phẩm hoàn thiện nhất.
+        </p>
+        
+        <div class="expertise-areas mt-4">
+          <h4 class="text-primary mb-3 typewriter-text" data-text="Chuyên môn chính">Chuyên môn chính</h4>
+          
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="expertise-item">
+                <h5 class="text-warning mb-2">🤖 AI & Machine Learning</h5>
+                <p class="text-light small mb-0">
+                  Phát triển ứng dụng AI với Python, TensorFlow, PyTorch. Xây dựng mô hình machine learning cho phân tích dữ liệu và dự đoán.
+                </p>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="expertise-item">
+                <h5 class="text-info mb-2">🌐 Mạng máy tính</h5>
+                <p class="text-light small mb-0">
+                  Thiết kế và triển khai mạng LAN/WAN, bảo mật mạng, quản trị hệ thống. Chứng chỉ Cisco Networking Academy.
+                </p>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="expertise-item">
+                <h5 class="text-success mb-2">⚙️ DevOps & Cloud</h5>
+                <p class="text-light small mb-0">
+                  Tự động hóa CI/CD với Docker, Kubernetes. Triển khai ứng dụng trên AWS, Azure. Monitoring và logging.
+                </p>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <div class="expertise-item">
+                <h5 class="text-danger mb-2">💻 Full-Stack Development</h5>
+                <p class="text-light small mb-0">
+                  Xây dựng ứng dụng web với React, Node.js, ASP.NET Core. Database design, API development, microservices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="passion-section mt-4">
+          <h4 class="text-primary mb-3">Đam mê & Mục tiêu</h4>
+          <p class="text-light">
+            Tôi yêu thích chia sẻ kiến thức qua dự án mã nguồn mở, blog kỹ thuật và nghiên cứu các chủ đề như
+            <em>Canvas LMS API</em>, <em>Static Site Generator</em>, và <em>DevOps tự động hóa</em>.
+            Luôn học hỏi và cập nhật công nghệ mới để tạo ra những giải pháp sáng tạo và hiệu quả.
+          </p>
+        </div>
+
+        <div class="mt-4 d-flex gap-3">
+          <a href="mailto:tandung29022004@gmail.com" class="btn btn-primary">
+            <i class="bi bi-envelope-fill me-1"></i> Liên hệ tôi
+          </a>
+          <a href="resume.pdf" class="btn btn-outline-light">
+            <i class="bi bi-file-earmark-text"></i> Tải CV
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 📰 Bài viết -->
+  <section id="posts" class="container py-5 text-center">
+    <h2 class="fw-bold mb-4"><span class="text-gradient-blog typewriter-text" data-text="Blog cá nhân">Blog cá nhân</span></h2>
+    
+    <!-- Blog Slider Container -->
+    <div class="blog-slider-container">
+      <div class="blog-slider-wrapper">
+        <div id="blog-slider" class="blog-slider">
+          <!-- JS sẽ tự thêm bài viết vào đây -->
+        </div>
+      </div>
+      
+      <!-- Navigation Controls -->
+      <div class="slider-controls">
+        <button class="slider-btn prev-btn" id="prevBtn" aria-label="Previous posts">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button class="slider-btn next-btn" id="nextBtn" aria-label="Next posts">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+      
+      <!-- Dots Indicator -->
+      <div class="slider-dots" id="sliderDots">
+        <!-- JS sẽ tự thêm dots vào đây -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 🌍 Ngôn ngữ -->
+  <section id="languages" class="container py-5">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h2 class="fw-bold mb-4">
+          <span class="text-gradient-lang typewriter-text" data-text="Ngôn ngữ">Ngôn ngữ</span>
+        </h2>
+        <p class="lead text-light">Khả năng ngôn ngữ đa dạng để giao tiếp và làm việc quốc tế</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Tiếng Anh -->
+      <div class="col-lg-6">
+        <div class="language-card english-card animate__animated animate__fadeInUp">
+          <div class="language-header">
+            <div class="flag-icon">🇺🇸</div>
+            <h3 class="language-title">English</h3>
+            <div class="proficiency-level">
+              <span class="level-text">Advanced</span>
+              <div class="level-bar">
+                <div class="level-fill" data-level="90"></div>
+              </div>
+              <span class="level-percent">90%</span>
+            </div>
+          </div>
+          
+          <div class="language-content">
+            <div class="certifications">
+              <h5 class="text-warning mb-3">📜 Chứng chỉ</h5>
+              <div class="cert-item">
+                <span class="cert-name">TOEIC 850/990</span>
+                <span class="cert-year">2024</span>
+              </div>
+              <div class="cert-item">
+                <span class="cert-name">IELTS 7.0</span>
+                <span class="cert-year">2023</span>
+              </div>
+            </div>
+            
+            <div class="skills">
+              <h5 class="text-info mb-3">💬 Kỹ năng</h5>
+              <div class="skill-tags">
+                <span class="skill-tag">Speaking</span>
+                <span class="skill-tag">Writing</span>
+                <span class="skill-tag">Technical Documentation</span>
+                <span class="skill-tag">Presentation</span>
+              </div>
+            </div>
+            
+            <div class="experience">
+              <h5 class="text-success mb-3">🌍 Kinh nghiệm</h5>
+              <p class="text-light small">
+                Làm việc với khách hàng quốc tế, tham gia hội thảo công nghệ, 
+                viết tài liệu kỹ thuật và thuyết trình bằng tiếng Anh.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiếng Nhật -->
+      <div class="col-lg-6">
+        <div class="language-card japanese-card animate__animated animate__fadeInUp">
+          <div class="language-header">
+            <div class="flag-icon">🇯🇵</div>
+            <h3 class="language-title">日本語 (Japanese)</h3>
+            <div class="proficiency-level">
+              <span class="level-text">Intermediate</span>
+              <div class="level-bar">
+                <div class="level-fill" data-level="70"></div>
+              </div>
+              <span class="level-percent">70%</span>
+            </div>
+          </div>
+          
+          <div class="language-content">
+            <div class="certifications">
+              <h5 class="text-warning mb-3">📜 Chứng chỉ</h5>
+              <div class="cert-item">
+                <span class="cert-name">JLPT N3</span>
+                <span class="cert-year">2024</span>
+              </div>
+              <div class="cert-item">
+                <span class="cert-name">JFT-Basic A2</span>
+                <span class="cert-year">2023</span>
+              </div>
+            </div>
+            
+            <div class="skills">
+              <h5 class="text-info mb-3">💬 Kỹ năng</h5>
+              <div class="skill-tags">
+                <span class="skill-tag">Hiragana/Katakana</span>
+                <span class="skill-tag">Kanji (1000+)</span>
+                <span class="skill-tag">Business Japanese</span>
+                <span class="skill-tag">Reading</span>
+              </div>
+            </div>
+            
+            <div class="experience">
+              <h5 class="text-success mb-3">🌍 Kinh nghiệm</h5>
+              <p class="text-light small">
+                Học tập và làm việc với đối tác Nhật Bản, đọc tài liệu kỹ thuật, 
+                giao tiếp trong môi trường công ty Nhật.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <!-- Brand Section -->
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="footer-brand">
+            <h5 class="fw-bold mb-3">
+              <span class="text-gradient-footer">Noway</span>
+            </h5>
+            <p class="text-light mb-3">
+              Full-stack Developer & Tech Enthusiast
+            </p>
+            <p class="text-muted small">
+              Chuyên phát triển web application với Java, JavaScript và các công nghệ hiện đại.
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6 mb-4">
+          <h6 class="fw-bold text-light mb-3">Liên kết nhanh</h6>
+          <ul class="footer-links">
+            <li><a href="#hero" class="footer-link">Trang chủ</a></li>
+            <li><a href="#about" class="footer-link">Giới thiệu</a></li>
+            <li><a href="#posts" class="footer-link">Blog</a></li>
+            <li><a href="certificates.html" class="footer-link">Chứng chỉ</a></li>
+            <li><a href="#contact" class="footer-link">Liên hệ</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <h6 class="fw-bold text-light mb-3">Thông tin liên hệ</h6>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="bi bi-envelope-fill text-primary me-2"></i>
+              <span class="text-light">dungnoway@gmail.com</span>
+            </div>
+            <div class="contact-item">
+              <i class="bi bi-geo-alt-fill text-success me-2"></i>
+              <span class="text-light">Ho Chi Minh City, Vietnam</span>
+            </div>
+            <div class="contact-item">
+              <i class="bi bi-code-slash text-warning me-2"></i>
+              <span class="text-light">Full-stack Developer</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="col-lg-3 col-md-6 mb-4">
+          <h6 class="fw-bold text-light mb-3">Mạng xã hội</h6>
+          <div class="social-links">
+            <a href="https://github.com/noway" target="_blank" class="social-link github" aria-label="GitHub">
+              <i class="bi bi-github"></i>
+              <span>GitHub</span>
+            </a>
+            <a href="https://www.facebook.com/dungnoway" target="_blank" class="social-link facebook" aria-label="Facebook">
+              <i class="bi bi-facebook"></i>
+              <span>Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/tnz.dzng/" target="_blank" class="social-link instagram" aria-label="Instagram">
+              <i class="bi bi-instagram"></i>
+              <span>Instagram</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <hr class="footer-divider">
+
+      <!-- Copyright -->
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="text-muted mb-0">
+            © 2025 <strong class="text-light">Nguyen Tan Dung (Noway)</strong>
+          </p>
+        </div>
+        <div class="col-md-6 text-md-end">
+          <p class="text-muted mb-0">
+            Made with <i class="bi bi-cup-hot text-warning"></i> and <i class="bi bi-heart-fill text-danger"></i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🔝 Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <i class="bi bi-arrow-up"></i>
+    <div class="progress-ring">
+      <svg class="progress-ring-svg" width="60" height="60">
+        <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <circle class="progress-ring-fill" cx="30" cy="30" r="25" fill="transparent" stroke="url(#gradient)" stroke-width="3" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </button>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/posts.js"></script>
+  <script src="assets/js/index.js"></script>
+</body>
+</html>

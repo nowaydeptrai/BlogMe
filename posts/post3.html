@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mạng máy tính: TCP/IP và HTTP Protocol - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Mạng máy tính: TCP/IP và HTTP Protocol</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 16 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/tcp-http-protocol.jpg" alt="TCP/IP và HTTP Protocol" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Hiểu biết về TCP/IP và HTTP Protocol là nền tảng quan trọng cho mọi web developer. 
+              Trong bài viết này, chúng ta sẽ khám phá cách các giao thức này hoạt động và tác động đến web development.
+            </p>
+
+            <h2 class="post-section-title">TCP/IP Protocol Stack</h2>
+            <p>
+              TCP/IP là bộ giao thức mạng được sử dụng rộng rãi nhất trên Internet. Nó bao gồm 4 lớp chính:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-text">┌─────────────────────────────────────┐
+│        Application Layer            │ ← HTTP, HTTPS, FTP, SMTP
+├─────────────────────────────────────┤
+│        Transport Layer              │ ← TCP, UDP
+├─────────────────────────────────────┤
+│        Internet Layer               │ ← IP, ICMP, ARP
+├─────────────────────────────────────┤
+│        Network Access Layer         │ ← Ethernet, WiFi
+└─────────────────────────────────────┘
+
+TCP/IP Protocol Stack Layers:
+
+1. Application Layer (Lớp Ứng dụng)
+   - HTTP/HTTPS: Web browsing
+   - FTP: File transfer
+   - SMTP: Email sending
+   - DNS: Domain name resolution
+
+2. Transport Layer (Lớp Vận chuyển)
+   - TCP: Reliable, connection-oriented
+   - UDP: Fast, connectionless
+
+3. Internet Layer (Lớp Internet)
+   - IP: Routing and addressing
+   - ICMP: Error reporting
+   - ARP: Address resolution
+
+4. Network Access Layer (Lớp Truy cập Mạng)
+   - Ethernet: Wired connections
+   - WiFi: Wireless connections</code></pre>
+            </div>
+
+            <h2 class="post-section-title">TCP - Transmission Control Protocol</h2>
+            <p>
+              TCP đảm bảo việc truyền dữ liệu đáng tin cậy giữa các ứng dụng. Nó cung cấp:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Reliability:</strong> Đảm bảo dữ liệu được gửi đúng và đầy đủ</li>
+              <li><strong>Ordering:</strong> Dữ liệu được sắp xếp theo đúng thứ tự</li>
+              <li><strong>Flow Control:</strong> Điều chỉnh tốc độ truyền dữ liệu</li>
+              <li><strong>Congestion Control:</strong> Tránh tắc nghẽn mạng</li>
+            </ul>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// TCP Connection Example với Node.js
+const net = require('net');
+
+// TCP Server
+const server = net.createServer((socket) => {
+    console.log('Client connected:', socket.remoteAddress);
+    
+    // Xử lý dữ liệu từ client
+    socket.on('data', (data) => {
+        console.log('Received:', data.toString());
+        
+        // Echo dữ liệu về client
+        socket.write(`Echo: ${data}`);
+    });
+    
+    // Xử lý khi client disconnect
+    socket.on('end', () => {
+        console.log('Client disconnected');
+    });
+    
+    // Xử lý lỗi
+    socket.on('error', (err) => {
+        console.error('Socket error:', err);
+    });
+});
+
+// Lắng nghe trên port 3000
+server.listen(3000, () => {
+    console.log('TCP Server running on port 3000');
+});
+
+// TCP Client
+const client = new net.Socket();
+
+client.connect(3000, 'localhost', () => {
+    console.log('Connected to server');
+    client.write('Hello TCP Server!');
+});
+
+client.on('data', (data) => {
+    console.log('Server response:', data.toString());
+    client.destroy(); // Đóng connection
+});
+
+client.on('close', () => {
+    console.log('Connection closed');
+});</code></pre>
+            </div>
+
+            <h2 class="post-section-title">HTTP - HyperText Transfer Protocol</h2>
+            <p>
+              HTTP là giao thức ứng dụng được sử dụng để truyền tải dữ liệu trên World Wide Web. 
+              HTTP hoạt động theo mô hình client-server với request-response pattern.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-http">// HTTP Request Example
+GET /api/users/123 HTTP/1.1
+Host: api.example.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+Content-Type: application/json
+Cache-Control: no-cache
+
+// HTTP Response Example
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 156
+Date: Mon, 20 Jan 2025 10:30:00 GMT
+Server: nginx/1.18.0
+Cache-Control: max-age=3600
+
+{
+    "id": 123,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "createdAt": "2025-01-20T10:30:00Z"
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">HTTP Methods và Status Codes</h2>
+            <p>
+              HTTP cung cấp các methods khác nhau cho các thao tác khác nhau và status codes để báo hiệu kết quả.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// HTTP Methods Implementation với Express.js
+const express = require('express');
+const app = express();
+
+// Middleware để parse JSON
+app.use(express.json());
+
+// GET - Lấy dữ liệu
+app.get('/api/users', (req, res) => {
+    const users = [
+        { id: 1, name: 'John Doe', email: 'john@example.com' },
+        { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+    ];
+    res.status(200).json(users);
+});
+
+// GET với parameters
+app.get('/api/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    const user = users.find(u => u.id === userId);
+    
+    if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    
+    res.status(200).json(user);
+});
+
+// POST - Tạo dữ liệu mới
+app.post('/api/users', (req, res) => {
+    const { name, email } = req.body;
+    
+    if (!name || !email) {
+        return res.status(400).json({ error: 'Name and email are required' });
+    }
+    
+    const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        createdAt: new Date()
+    };
+    
+    res.status(201).json(newUser);
+});
+
+// PUT - Cập nhật toàn bộ resource
+app.put('/api/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    const { name, email } = req.body;
+    
+    const userIndex = users.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    
+    users[userIndex] = { ...users[userIndex], name, email };
+    res.status(200).json(users[userIndex]);
+});
+
+// DELETE - Xóa resource
+app.delete('/api/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    const userIndex = users.findIndex(u => u.id === userId);
+    
+    if (userIndex === -1) {
+        return res.status(404).json({ error: 'User not found' });
+    }
+    
+    users.splice(userIndex, 1);
+    res.status(204).send(); // No content
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Something went wrong!' });
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});</code></pre>
+            </div>
+
+            <h2 class="post-section-title">HTTPS - HTTP Secure</h2>
+            <p>
+              HTTPS là phiên bản bảo mật của HTTP, sử dụng SSL/TLS để mã hóa dữ liệu truyền tải.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// HTTPS Server với Node.js
+const https = require('https');
+const fs = require('fs');
+
+// SSL Certificate files
+const options = {
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem')
+};
+
+const server = https.createServer(options, (req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello HTTPS World!');
+});
+
+server.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+});
+
+// HTTPS Client Request
+const https = require('https');
+
+const options = {
+    hostname: 'api.example.com',
+    port: 443,
+    path: '/api/data',
+    method: 'GET',
+    headers: {
+        'User-Agent': 'MyApp/1.0'
+    }
+};
+
+const req = https.request(options, (res) => {
+    console.log(`Status: ${res.statusCode}`);
+    console.log(`Headers: ${JSON.stringify(res.headers)}`);
+    
+    res.on('data', (data) => {
+        console.log('Response data:', data.toString());
+    });
+});
+
+req.on('error', (err) => {
+    console.error('Request error:', err);
+});
+
+req.end();</code></pre>
+            </div>
+
+            <h2 class="post-section-title">WebSocket - Real-time Communication</h2>
+            <p>
+              WebSocket cung cấp kết nối hai chiều, real-time giữa client và server, 
+              vượt trội hơn HTTP cho các ứng dụng cần giao tiếp liên tục.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// WebSocket Server với Socket.io
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
+
+// Xử lý kết nối WebSocket
+io.on('connection', (socket) => {
+    console.log('User connected:', socket.id);
+    
+    // Join room
+    socket.on('join-room', (roomId) => {
+        socket.join(roomId);
+        socket.to(roomId).emit('user-joined', socket.id);
+    });
+    
+    // Chat message
+    socket.on('chat-message', (data) => {
+        socket.to(data.roomId).emit('chat-message', {
+            userId: socket.id,
+            message: data.message,
+            timestamp: new Date()
+        });
+    });
+    
+    // Typing indicator
+    socket.on('typing', (data) => {
+        socket.to(data.roomId).emit('user-typing', {
+            userId: socket.id,
+            isTyping: data.isTyping
+        });
+    });
+    
+    // Disconnect
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id);
+    });
+});
+
+server.listen(3000, () => {
+    console.log('WebSocket server running on port 3000');
+});
+
+// WebSocket Client (Browser)
+const socket = io('http://localhost:3000');
+
+// Join room
+socket.emit('join-room', 'room-123');
+
+// Send message
+function sendMessage(message) {
+    socket.emit('chat-message', {
+        roomId: 'room-123',
+        message: message
+    });
+}
+
+// Receive messages
+socket.on('chat-message', (data) => {
+    console.log('New message:', data.message);
+    displayMessage(data);
+});
+
+// Typing indicator
+let typingTimer;
+function onTyping() {
+    socket.emit('typing', {
+        roomId: 'room-123',
+        isTyping: true
+    });
+    
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(() => {
+        socket.emit('typing', {
+            roomId: 'room-123',
+            isTyping: false
+        });
+    }, 1000);
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Network Performance Optimization</h2>
+            <p>
+              Tối ưu hóa hiệu suất mạng là yếu tố quan trọng trong web development. 
+              Dưới đây là một số kỹ thuật:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// HTTP/2 Server Push
+const http2 = require('http2');
+const fs = require('fs');
+
+const server = http2.createSecureServer({
+    key: fs.readFileSync('private-key.pem'),
+    cert: fs.readFileSync('certificate.pem')
+});
+
+server.on('stream', (stream, headers) => {
+    if (headers[':path'] === '/') {
+        // Push CSS và JS files
+        stream.pushStream({ ':path': '/style.css' }, (err, pushStream) => {
+            if (!err) {
+                pushStream.respond({ 'content-type': 'text/css' });
+                pushStream.end(fs.readFileSync('style.css'));
+            }
+        });
+        
+        stream.pushStream({ ':path': '/script.js' }, (err, pushStream) => {
+            if (!err) {
+                pushStream.respond({ 'content-type': 'application/javascript' });
+                pushStream.end(fs.readFileSync('script.js'));
+            }
+        });
+        
+        // Send main HTML
+        stream.respond({ 'content-type': 'text/html' });
+        stream.end(fs.readFileSync('index.html'));
+    }
+});
+
+// Connection Pooling
+const { Pool } = require('pg');
+
+const pool = new Pool({
+    user: 'dbuser',
+    host: 'localhost',
+    database: 'mydb',
+    password: 'password',
+    port: 5432,
+    max: 20, // Maximum connections
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+});
+
+// Reuse connections
+async function getUsers() {
+    const client = await pool.connect();
+    try {
+        const result = await client.query('SELECT * FROM users');
+        return result.rows;
+    } finally {
+        client.release(); // Return connection to pool
+    }
+}
+
+// Caching với Redis
+const redis = require('redis');
+const client = redis.createClient();
+
+async function getCachedData(key) {
+    try {
+        const cached = await client.get(key);
+        if (cached) {
+            return JSON.parse(cached);
+        }
+        
+        // Fetch from database
+        const data = await fetchFromDatabase(key);
+        
+        // Cache for 1 hour
+        await client.setex(key, 3600, JSON.stringify(data));
+        return data;
+    } catch (error) {
+        console.error('Cache error:', error);
+        return await fetchFromDatabase(key);
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi làm việc với TCP/IP và HTTP, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Use HTTPS:</strong> Luôn sử dụng HTTPS cho production</li>
+              <li><strong>Connection Pooling:</strong> Tái sử dụng connections</li>
+              <li><strong>Caching:</strong> Implement caching strategies</li>
+              <li><strong>Compression:</strong> Sử dụng gzip compression</li>
+              <li><strong>HTTP/2:</strong> Upgrade lên HTTP/2 khi có thể</li>
+              <li><strong>Monitoring:</strong> Monitor network performance</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Hiểu biết về TCP/IP và HTTP Protocol là nền tảng quan trọng cho mọi web developer. 
+              Từ việc thiết kế API RESTful đến tối ưu hóa hiệu suất mạng, kiến thức về các giao thức này 
+              sẽ giúp bạn xây dựng các ứng dụng web hiệu quả và đáng tin cậy.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">JavaScript ES6+ và Modern Web Development</h5>
+                <p class="recent-post-excerpt">Khám phá các tính năng mới của JavaScript ES6+...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-multithreading.jpg" alt="Java Multithreading" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Multithreading và Concurrency</h5>
+                <p class="recent-post-excerpt">Lập trình đa luồng trong Java: Thread, Executor...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

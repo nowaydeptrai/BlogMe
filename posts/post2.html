@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JavaScript ES6+ và Modern Web Development - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">JavaScript ES6+ và Modern Web Development</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 18 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6+ Modern Development" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              JavaScript ES6+ đã cách mạng hóa cách chúng ta viết code JavaScript. Với các tính năng mới như arrow functions, 
+              destructuring, modules và async/await, JavaScript hiện đại trở nên mạnh mẽ và dễ đọc hơn bao giờ hết.
+            </p>
+
+            <h2 class="post-section-title">Arrow Functions - Hàm Mũi Tên</h2>
+            <p>
+              Arrow functions cung cấp cú pháp ngắn gọn hơn cho việc viết functions và tự động bind `this` context.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// ES5 - Traditional function
+var numbers = [1, 2, 3, 4, 5];
+var doubled = numbers.map(function(num) {
+    return num * 2;
+});
+
+// ES6+ - Arrow function
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(num => num * 2);
+
+// Multiple parameters
+const add = (a, b) => a + b;
+
+// No parameters
+const greet = () => console.log('Hello World!');
+
+// Complex function body
+const processData = (data) => {
+    const result = data.filter(item => item.active);
+    return result.map(item => ({
+        id: item.id,
+        name: item.name.toUpperCase()
+    }));
+};</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Destructuring Assignment</h2>
+            <p>
+              Destructuring cho phép bạn "unpack" values từ arrays hoặc properties từ objects vào các biến riêng biệt.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Array Destructuring
+const colors = ['red', 'green', 'blue'];
+const [primary, secondary, tertiary] = colors;
+console.log(primary); // 'red'
+
+// Object Destructuring
+const user = {
+    name: 'John Doe',
+    age: 30,
+    email: 'john@example.com',
+    address: {
+        city: 'New York',
+        country: 'USA'
+    }
+};
+
+const { name, age, email, address: { city } } = user;
+console.log(name, city); // 'John Doe', 'New York'
+
+// Function Parameters Destructuring
+function createUser({ name, email, age = 18 }) {
+    return {
+        id: Date.now(),
+        name,
+        email,
+        age,
+        createdAt: new Date()
+    };
+}
+
+const newUser = createUser({
+    name: 'Jane Smith',
+    email: 'jane@example.com'
+});</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Template Literals</h2>
+            <p>
+              Template literals cho phép bạn tạo strings với embedded expressions và multi-line strings một cách dễ dàng.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Basic template literal
+const name = 'World';
+const greeting = `Hello, ${name}!`;
+
+// Multi-line strings
+const htmlTemplate = `
+    <div class="user-card">
+        <h2>${user.name}</h2>
+        <p>Email: ${user.email}</p>
+        <p>Age: ${user.age}</p>
+    </div>
+`;
+
+// Tagged template literals
+function highlight(strings, ...values) {
+    return strings.reduce((result, string, i) => {
+        const value = values[i] ? `<mark>${values[i]}</mark>` : '';
+        return result + string + value;
+    }, '');
+}
+
+const user = { name: 'John', score: 95 };
+const message = highlight`User ${user.name} scored ${user.score} points!`;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Async/Await - Xử lý Bất đồng bộ</h2>
+            <p>
+              Async/await làm cho việc xử lý Promises trở nên dễ đọc và dễ debug hơn so với callback hell.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Traditional Promise chains
+function fetchUserData(userId) {
+    return fetch(`/api/users/${userId}`)
+        .then(response => response.json())
+        .then(user => {
+            return fetch(`/api/users/${userId}/posts`)
+                .then(response => response.json())
+                .then(posts => ({
+                    user,
+                    posts
+                }));
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            throw error;
+        });
+}
+
+// Modern async/await
+async function fetchUserData(userId) {
+    try {
+        const userResponse = await fetch(`/api/users/${userId}`);
+        const user = await userResponse.json();
+        
+        const postsResponse = await fetch(`/api/users/${userId}/posts`);
+        const posts = await postsResponse.json();
+        
+        return { user, posts };
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+// Parallel async operations
+async function fetchUserDashboard(userId) {
+    try {
+        const [user, posts, comments] = await Promise.all([
+            fetch(`/api/users/${userId}`).then(res => res.json()),
+            fetch(`/api/users/${userId}/posts`).then(res => res.json()),
+            fetch(`/api/users/${userId}/comments`).then(res => res.json())
+        ]);
+        
+        return { user, posts, comments };
+    } catch (error) {
+        console.error('Dashboard fetch failed:', error);
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">ES6 Modules</h2>
+            <p>
+              ES6 modules cung cấp cách tổ chức code thành các modules riêng biệt với import/export syntax.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// mathUtils.js - Export module
+export const PI = 3.14159;
+
+export function add(a, b) {
+    return a + b;
+}
+
+export function multiply(a, b) {
+    return a * b;
+}
+
+// Default export
+export default class Calculator {
+    constructor() {
+        this.history = [];
+    }
+    
+    calculate(operation, a, b) {
+        const result = operation(a, b);
+        this.history.push({ operation: operation.name, a, b, result });
+        return result;
+    }
+}
+
+// userService.js - Import and use
+import Calculator, { add, multiply, PI } from './mathUtils.js';
+
+const calc = new Calculator();
+const sum = calc.calculate(add, 5, 3);
+const product = calc.calculate(multiply, 4, 7);
+
+console.log(`Sum: ${sum}, Product: ${product}, PI: ${PI}`);</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Modern Array Methods</h2>
+            <p>
+              ES6+ cung cấp nhiều array methods mạnh mẽ giúp xử lý dữ liệu một cách hiệu quả.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">const products = [
+    { id: 1, name: 'Laptop', price: 999, category: 'Electronics', inStock: true },
+    { id: 2, name: 'Book', price: 19, category: 'Education', inStock: false },
+    { id: 3, name: 'Phone', price: 699, category: 'Electronics', inStock: true },
+    { id: 4, name: 'Pen', price: 2, category: 'Office', inStock: true }
+];
+
+// Array methods chaining
+const expensiveElectronics = products
+    .filter(product => product.category === 'Electronics')
+    .filter(product => product.price > 500)
+    .map(product => ({
+        ...product,
+        priceWithTax: product.price * 1.1,
+        displayName: product.name.toUpperCase()
+    }))
+    .sort((a, b) => b.price - a.price);
+
+// Reduce for complex operations
+const categoryStats = products.reduce((acc, product) => {
+    const category = product.category;
+    if (!acc[category]) {
+        acc[category] = { count: 0, totalValue: 0, inStock: 0 };
+    }
+    acc[category].count++;
+    acc[category].totalValue += product.price;
+    if (product.inStock) acc[category].inStock++;
+    return acc;
+}, {});
+
+// Find and includes
+const laptop = products.find(product => product.name === 'Laptop');
+const hasElectronics = products.some(product => product.category === 'Electronics');
+const allInStock = products.every(product => product.inStock);</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Classes và Inheritance</h2>
+            <p>
+              ES6 classes cung cấp cú pháp rõ ràng hơn cho OOP trong JavaScript.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-javascript">// Base class
+class Animal {
+    constructor(name, species) {
+        this.name = name;
+        this.species = species;
+        this.energy = 100;
+    }
+    
+    eat(food) {
+        this.energy += food.nutrition;
+        console.log(`${this.name} ate ${food.name} and gained energy!`);
+    }
+    
+    sleep() {
+        this.energy = Math.min(100, this.energy + 20);
+        console.log(`${this.name} is sleeping...`);
+    }
+    
+    speak() {
+        console.log(`${this.name} makes a sound`);
+    }
+}
+
+// Derived class
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name, 'Canine');
+        this.breed = breed;
+        this.tricks = [];
+    }
+    
+    speak() {
+        console.log(`${this.name} barks: Woof! Woof!`);
+    }
+    
+    learnTrick(trick) {
+        this.tricks.push(trick);
+        console.log(`${this.name} learned ${trick}!`);
+    }
+    
+    performTrick() {
+        if (this.tricks.length === 0) {
+            console.log(`${this.name} doesn't know any tricks yet.`);
+            return;
+        }
+        const randomTrick = this.tricks[Math.floor(Math.random() * this.tricks.length)];
+        console.log(`${this.name} performs ${randomTrick}!`);
+    }
+}
+
+// Usage
+const myDog = new Dog('Buddy', 'Golden Retriever');
+myDog.learnTrick('sit');
+myDog.learnTrick('roll over');
+myDog.performTrick();
+myDog.speak();</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi sử dụng JavaScript ES6+, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Use const/let:</strong> Thay thế var bằng const và let</li>
+              <li><strong>Arrow Functions:</strong> Sử dụng cho short functions và callbacks</li>
+              <li><strong>Template Literals:</strong> Thay thế string concatenation</li>
+              <li><strong>Destructuring:</strong> Làm code ngắn gọn và rõ ràng hơn</li>
+              <li><strong>Async/Await:</strong> Thay thế Promise chains phức tạp</li>
+              <li><strong>Modules:</strong> Tổ chức code thành modules nhỏ, có thể tái sử dụng</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              JavaScript ES6+ đã mang lại những cải tiến đáng kể cho ngôn ngữ lập trình phổ biến nhất thế giới. 
+              Với các tính năng như arrow functions, destructuring, async/await và modules, JavaScript hiện đại 
+              trở nên mạnh mẽ, dễ đọc và dễ maintain hơn. Hãy áp dụng những kiến thức này vào các dự án của bạn!
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/tcp-http-protocol.jpg" alt="TCP/IP Protocol" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Mạng máy tính: TCP/IP và HTTP Protocol</h5>
+                <p class="recent-post-excerpt">Tìm hiểu sâu về giao thức TCP/IP, HTTP/HTTPS...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/nodejs-realtime.jpg" alt="Node.js Real-time" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Node.js và Real-time Web Applications</h5>
+                <p class="recent-post-excerpt">Xây dựng ứng dụng real-time với Node.js, Socket.io...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Spring Boot: Xây dựng RESTful API - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Java Spring Boot: Xây dựng RESTful API</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 20 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot RESTful API" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Phát triển ứng dụng web hiện đại với Java Spring Boot là một trong những kỹ năng quan trọng nhất của một Full-Stack Developer. 
+              Trong bài viết này, chúng ta sẽ tìm hiểu cách xây dựng RESTful API từ cơ bản đến nâng cao.
+            </p>
+
+            <h2 class="post-section-title">Tại sao chọn Spring Boot?</h2>
+            <p>
+              Spring Boot đã trở thành framework phổ biến nhất trong cộng đồng Java nhờ vào khả năng tạo ra các ứng dụng production-ready một cách nhanh chóng. 
+              Với auto-configuration, embedded server và starter dependencies, Spring Boot giúp developer tập trung vào business logic thay vì cấu hình phức tạp.
+            </p>
+
+            <h2 class="post-section-title">Thiết lập Project</h2>
+            <p>
+              Bắt đầu với Spring Boot rất đơn giản. Bạn có thể sử dụng Spring Initializr để tạo project hoặc sử dụng Maven/Gradle. 
+              Các dependencies cần thiết bao gồm Spring Web, Spring Data JPA, MySQL Driver và Spring Boot DevTools.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Xây dựng RESTful API</h2>
+            <p>
+              RESTful API được thiết kế theo nguyên tắc REST (Representational State Transfer), sử dụng HTTP methods như GET, POST, PUT, DELETE 
+              để thực hiện các thao tác CRUD (Create, Read, Update, Delete) trên resources.
+            </p>
+
+            <h3 class="post-subtitle">1. Entity Class</h3>
+            <p>
+              Đầu tiên, chúng ta tạo entity class để mapping với database table:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @Column(nullable = false)
+    private String name;
+    
+    @Column(unique = true, nullable = false)
+    private String email;
+    
+    // Constructors, getters, setters
+}</code></pre>
+            </div>
+
+            <h3 class="post-subtitle">2. Repository Interface</h3>
+            <p>
+              Spring Data JPA cung cấp JpaRepository interface giúp chúng ta thực hiện các thao tác database một cách dễ dàng:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">@Repository
+public interface UserRepository extends JpaRepository&lt;User, Long&gt; {
+    Optional&lt;User&gt; findByEmail(String email);
+    List&lt;User&gt; findByNameContaining(String name);
+}</code></pre>
+            </div>
+
+            <h3 class="post-subtitle">3. Service Layer</h3>
+            <p>
+              Service layer chứa business logic và giao tiếp với repository:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository;
+    
+    public List&lt;User&gt; getAllUsers() {
+        return userRepository.findAll();
+    }
+    
+    public User createUser(User user) {
+        return userRepository.save(user);
+    }
+    
+    public Optional&lt;User&gt; getUserById(Long id) {
+        return userRepository.findById(id);
+    }
+}</code></pre>
+            </div>
+
+            <h3 class="post-subtitle">4. REST Controller</h3>
+            <p>
+              Controller layer xử lý HTTP requests và trả về responses:
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">@RestController
+@RequestMapping("/api/users")
+public class UserController {
+    @Autowired
+    private UserService userService;
+    
+    @GetMapping
+    public ResponseEntity&lt;List&lt;User&gt;&gt; getAllUsers() {
+        List&lt;User&gt; users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+    
+    @PostMapping
+    public ResponseEntity&lt;User&gt; createUser(@RequestBody User user) {
+        User savedUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi xây dựng RESTful API với Spring Boot, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>RESTful URL Design:</strong> Sử dụng nouns thay vì verbs, versioning API</li>
+              <li><strong>HTTP Status Codes:</strong> Trả về status code phù hợp (200, 201, 400, 404, 500)</li>
+              <li><strong>Error Handling:</strong> Sử dụng @ControllerAdvice để xử lý exceptions</li>
+              <li><strong>Validation:</strong> Sử dụng Bean Validation để validate input</li>
+              <li><strong>Security:</strong> Implement authentication và authorization</li>
+              <li><strong>Documentation:</strong> Sử dụng Swagger/OpenAPI để document API</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Spring Boot cung cấp một nền tảng mạnh mẽ và linh hoạt để xây dựng RESTful API. 
+              Với auto-configuration và starter dependencies, bạn có thể tập trung vào việc phát triển business logic 
+              thay vì cấu hình phức tạp. Hãy thực hành và khám phá thêm các tính năng nâng cao của Spring Boot!
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">JavaScript ES6+ và Modern Web Development</h5>
+                <p class="recent-post-excerpt">Khám phá các tính năng mới của JavaScript ES6+...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/tcp-http-protocol.jpg" alt="TCP/IP Protocol" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Mạng máy tính: TCP/IP và HTTP Protocol</h5>
+                <p class="recent-post-excerpt">Tìm hiểu sâu về giao thức TCP/IP, HTTP/HTTPS...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-multithreading.jpg" alt="Java Multithreading" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Multithreading và Concurrency</h5>
+                <p class="recent-post-excerpt">Lập trình đa luồng trong Java: Thread, Executor...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>

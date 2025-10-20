@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Java Multithreading và Concurrency - Noway Blog</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="../assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="../assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="../assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="../assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Menu -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
+    <a class="navbar-brand fw-bold text-primary" href="../index.html">Noway</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+      <i class="bi bi-list fs-2 text-light"></i>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="menu">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item"><a class="nav-link" href="../index.html#about">Giới thiệu</a></li>
+        <li class="nav-item"><a class="nav-link" href="../index.html#posts">Blog</a></li>
+        <li class="nav-item"><a class="nav-link" href="../certificates.html">Chứng chỉ</a></li>
+        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
+        <li class="nav-item">
+          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
+            <i class="bi bi-github"></i> GitHub
+          </a>
+        </li>
+        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
+        <li class="nav-item">
+          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
+            <i class="bi bi-moon-fill" id="theme-icon"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 📰 Blog Post Content -->
+  <section class="container py-5 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Post Header -->
+        <div class="blog-post-header mb-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h1 class="blog-post-title">Java Multithreading và Concurrency</h1>
+              <p class="blog-post-meta text-muted">
+                <i class="bi bi-calendar3 me-1"></i> Cập nhật: 14 Tháng 1, 2025
+              </p>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots-vertical"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#"><i class="bi bi-share me-2"></i>Chia sẻ</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-bookmark me-2"></i>Lưu</a></li>
+                <li><a class="dropdown-item" href="#"><i class="bi bi-flag me-2"></i>Báo cáo</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Image -->
+        <div class="blog-post-image mb-4">
+          <img src="../assets/images/post/java-multithreading.jpg" alt="Java Multithreading và Concurrency" class="img-fluid rounded shadow">
+        </div>
+
+        <!-- Post Content -->
+        <div class="blog-post-content">
+          <div class="post-body">
+            <p class="lead">
+              Multithreading là một trong những tính năng mạnh mẽ nhất của Java, cho phép ứng dụng thực hiện 
+              nhiều tác vụ đồng thời. Trong bài viết này, chúng ta sẽ khám phá các khái niệm và kỹ thuật quan trọng.
+            </p>
+
+            <h2 class="post-section-title">Thread cơ bản</h2>
+            <p>
+              Thread là đơn vị nhỏ nhất của việc thực thi trong một process. Java cung cấp nhiều cách để tạo và quản lý threads.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">// Cách 1: Extend Thread class
+class MyThread extends Thread {
+    private String threadName;
+    
+    public MyThread(String name) {
+        this.threadName = name;
+    }
+    
+    @Override
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(threadName + " is running: " + i);
+            try {
+                Thread.sleep(1000); // Sleep for 1 second
+            } catch (InterruptedException e) {
+                System.out.println(threadName + " interrupted");
+            }
+        }
+    }
+}
+
+// Cách 2: Implement Runnable interface
+class MyRunnable implements Runnable {
+    private String threadName;
+    
+    public MyRunnable(String name) {
+        this.threadName = name;
+    }
+    
+    @Override
+    public void run() {
+        for (int i = 0; i < 5; i++) {
+            System.out.println(threadName + " is running: " + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println(threadName + " interrupted");
+            }
+        }
+    }
+}
+
+// Sử dụng threads
+public class ThreadExample {
+    public static void main(String[] args) {
+        // Cách 1: Extend Thread
+        MyThread thread1 = new MyThread("Thread-1");
+        thread1.start();
+        
+        // Cách 2: Implement Runnable
+        MyRunnable runnable = new MyRunnable("Thread-2");
+        Thread thread2 = new Thread(runnable);
+        thread2.start();
+        
+        // Cách 3: Lambda expression (Java 8+)
+        Thread thread3 = new Thread(() -> {
+            for (int i = 0; i < 5; i++) {
+                System.out.println("Lambda Thread is running: " + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread3.start();
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Synchronization và Locks</h2>
+            <p>
+              Khi nhiều threads truy cập vào cùng một resource, chúng ta cần đồng bộ hóa để tránh race conditions.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">// Shared resource cần bảo vệ
+class Counter {
+    private int count = 0;
+    
+    // Synchronized method
+    public synchronized void increment() {
+        count++;
+    }
+    
+    // Synchronized block
+    public void decrement() {
+        synchronized(this) {
+            count--;
+        }
+    }
+    
+    public synchronized int getCount() {
+        return count;
+    }
+}
+
+// Sử dụng ReentrantLock
+import java.util.concurrent.locks.ReentrantLock;
+
+class SafeCounter {
+    private int count = 0;
+    private final ReentrantLock lock = new ReentrantLock();
+    
+    public void increment() {
+        lock.lock();
+        try {
+            count++;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public int getCount() {
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+// Thread-safe Singleton pattern
+class Singleton {
+    private static volatile Singleton instance;
+    private static final Object lock = new Object();
+    
+    private Singleton() {}
+    
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (lock) {
+                if (instance == null) {
+                    instance = new Singleton();
+                }
+            }
+        }
+        return instance;
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Executor Framework</h2>
+            <p>
+              Executor Framework cung cấp cách quản lý threads hiệu quả hơn so với việc tạo threads thủ công.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">import java.util.concurrent.*;
+
+public class ExecutorExample {
+    public static void main(String[] args) {
+        // ThreadPoolExecutor
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        
+        // Submit tasks
+        for (int i = 0; i < 10; i++) {
+            final int taskId = i;
+            executor.submit(() -> {
+                System.out.println("Task " + taskId + " executed by " + 
+                    Thread.currentThread().getName());
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+        }
+        
+        // ScheduledExecutorService
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+        
+        // Schedule task to run after delay
+        scheduler.schedule(() -> {
+            System.out.println("Delayed task executed!");
+        }, 5, TimeUnit.SECONDS);
+        
+        // Schedule task to run periodically
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Periodic task executed at " + 
+                System.currentTimeMillis());
+        }, 0, 2, TimeUnit.SECONDS);
+        
+        // Shutdown executors
+        executor.shutdown();
+        scheduler.shutdown();
+    }
+}
+
+// Callable và Future
+class TaskWithResult implements Callable<String> {
+    private int id;
+    
+    public TaskWithResult(int id) {
+        this.id = id;
+    }
+    
+    @Override
+    public String call() throws Exception {
+        Thread.sleep(2000); // Simulate work
+        return "Result of task " + id;
+    }
+}
+
+public class CallableExample {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newCachedThreadPool();
+        
+        List<Future<String>> results = new ArrayList<>();
+        
+        for (int i = 0; i < 5; i++) {
+            Future<String> future = executor.submit(new TaskWithResult(i));
+            results.add(future);
+        }
+        
+        // Get results
+        for (Future<String> future : results) {
+            System.out.println(future.get()); // Blocking call
+        }
+        
+        executor.shutdown();
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Concurrent Collections</h2>
+            <p>
+              Java cung cấp các collection classes thread-safe trong package java.util.concurrent.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">import java.util.concurrent.*;
+import java.util.*;
+
+public class ConcurrentCollectionsExample {
+    public static void main(String[] args) {
+        // ConcurrentHashMap
+        ConcurrentHashMap<String, Integer> map = new ConcurrentHashMap<>();
+        
+        // Multiple threads can safely modify the map
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        
+        for (int i = 0; i < 10; i++) {
+            final int value = i;
+            executor.submit(() -> {
+                map.put("key" + value, value);
+                System.out.println("Added: key" + value + " = " + value);
+            });
+        }
+        
+        // BlockingQueue
+        BlockingQueue<String> queue = new ArrayBlockingQueue<>(10);
+        
+        // Producer
+        executor.submit(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    queue.put("Item " + i);
+                    System.out.println("Produced: Item " + i);
+                    Thread.sleep(1000);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        // Consumer
+        executor.submit(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    String item = queue.take();
+                    System.out.println("Consumed: " + item);
+                    Thread.sleep(1500);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        
+        // CopyOnWriteArrayList
+        CopyOnWriteArrayList<String> list = new CopyOnWriteArrayList<>();
+        list.add("Item 1");
+        list.add("Item 2");
+        
+        // Safe iteration even when list is modified
+        for (String item : list) {
+            System.out.println("Reading: " + item);
+            // Other threads can modify the list safely
+        }
+        
+        // ConcurrentLinkedQueue
+        ConcurrentLinkedQueue<Integer> queue2 = new ConcurrentLinkedQueue<>();
+        
+        // Multiple threads can safely add/remove
+        for (int i = 0; i < 5; i++) {
+            final int value = i;
+            executor.submit(() -> {
+                queue2.offer(value);
+                System.out.println("Added to queue: " + value);
+            });
+        }
+        
+        executor.shutdown();
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Atomic Variables</h2>
+            <p>
+              Atomic variables cung cấp các thao tác atomic cho các kiểu dữ liệu cơ bản, 
+              tránh việc sử dụng synchronization cho các thao tác đơn giản.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">import java.util.concurrent.atomic.*;
+
+public class AtomicExample {
+    private AtomicInteger counter = new AtomicInteger(0);
+    private AtomicBoolean flag = new AtomicBoolean(false);
+    private AtomicReference<String> reference = new AtomicReference<>("initial");
+    
+    public void demonstrateAtomicOperations() {
+        // Atomic increment
+        int newValue = counter.incrementAndGet();
+        System.out.println("Counter after increment: " + newValue);
+        
+        // Atomic compare and set
+        boolean success = counter.compareAndSet(newValue, 100);
+        System.out.println("CAS operation successful: " + success);
+        System.out.println("Counter value: " + counter.get());
+        
+        // Atomic boolean operations
+        boolean wasSet = flag.compareAndSet(false, true);
+        System.out.println("Flag was set: " + wasSet);
+        
+        // Atomic reference
+        String oldValue = reference.getAndSet("new value");
+        System.out.println("Old reference value: " + oldValue);
+        System.out.println("New reference value: " + reference.get());
+    }
+    
+    // Thread-safe counter without synchronization
+    public class AtomicCounter {
+        private AtomicInteger count = new AtomicInteger(0);
+        
+        public void increment() {
+            count.incrementAndGet();
+        }
+        
+        public void decrement() {
+            count.decrementAndGet();
+        }
+        
+        public int getCount() {
+            return count.get();
+        }
+        
+        // Custom atomic operation
+        public void add(int value) {
+            int current;
+            int newValue;
+            do {
+                current = count.get();
+                newValue = current + value;
+            } while (!count.compareAndSet(current, newValue));
+        }
+    }
+    
+    public static void main(String[] args) {
+        AtomicExample example = new AtomicExample();
+        example.demonstrateAtomicOperations();
+        
+        // Test with multiple threads
+        AtomicCounter counter = example.new AtomicCounter();
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        
+        for (int i = 0; i < 1000; i++) {
+            executor.submit(() -> {
+                counter.increment();
+                counter.add(5);
+            });
+        }
+        
+        executor.shutdown();
+        try {
+            executor.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        System.out.println("Final counter value: " + counter.getCount());
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">CompletableFuture - Asynchronous Programming</h2>
+            <p>
+              CompletableFuture cung cấp cách viết code bất đồng bộ một cách dễ đọc và mạnh mẽ.
+            </p>
+
+            <div class="code-block">
+              <pre><code class="language-java">import java.util.concurrent.*;
+import java.util.function.*;
+
+public class CompletableFutureExample {
+    
+    // Simulate async operations
+    public static CompletableFuture<String> fetchUserData(String userId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(1000); // Simulate network delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return "User data for " + userId;
+        });
+    }
+    
+    public static CompletableFuture<String> fetchUserPosts(String userId) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return "Posts for " + userId;
+        });
+    }
+    
+    public static CompletableFuture<String> sendNotification(String message) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return "Notification sent: " + message;
+        });
+    }
+    
+    public static void main(String[] args) throws Exception {
+        String userId = "user123";
+        
+        // Basic async operation
+        CompletableFuture<String> future = fetchUserData(userId);
+        future.thenAccept(result -> {
+            System.out.println("Received: " + result);
+        });
+        
+        // Chaining operations
+        fetchUserData(userId)
+            .thenApply(data -> "Processed: " + data)
+            .thenAccept(processed -> {
+                System.out.println(processed);
+            });
+        
+        // Combining multiple futures
+        CompletableFuture<String> userData = fetchUserData(userId);
+        CompletableFuture<String> userPosts = fetchUserPosts(userId);
+        
+        CompletableFuture<String> combined = userData.thenCombine(userPosts, (data, posts) -> {
+            return "User: " + data + ", Posts: " + posts;
+        });
+        
+        System.out.println("Combined result: " + combined.get());
+        
+        // Exception handling
+        CompletableFuture<String> futureWithException = CompletableFuture
+            .supplyAsync(() -> {
+                if (Math.random() > 0.5) {
+                    throw new RuntimeException("Random error occurred");
+                }
+                return "Success";
+            })
+            .handle((result, throwable) -> {
+                if (throwable != null) {
+                    return "Error handled: " + throwable.getMessage();
+                }
+                return result;
+            });
+        
+        System.out.println("Exception handling result: " + futureWithException.get());
+        
+        // AllOf - Wait for all futures
+        CompletableFuture<String> future1 = fetchUserData("user1");
+        CompletableFuture<String> future2 = fetchUserData("user2");
+        CompletableFuture<String> future3 = fetchUserData("user3");
+        
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(future1, future2, future3);
+        
+        allFutures.thenRun(() -> {
+            System.out.println("All operations completed!");
+            try {
+                System.out.println("Results: " + future1.get() + ", " + future2.get() + ", " + future3.get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        
+        // AnyOf - Wait for any future to complete
+        CompletableFuture<String> anyFuture = CompletableFuture.anyOf(future1, future2, future3)
+            .thenApply(result -> (String) result);
+        
+        System.out.println("First completed: " + anyFuture.get());
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="post-section-title">Best Practices</h2>
+            <p>
+              Khi làm việc với multithreading trong Java, hãy tuân thủ các best practices sau:
+            </p>
+
+            <ul class="post-list">
+              <li><strong>Avoid synchronized methods:</strong> Sử dụng synchronized blocks thay vì methods</li>
+              <li><strong>Use ExecutorService:</strong> Thay vì tạo threads thủ công</li>
+              <li><strong>Prefer concurrent collections:</strong> Sử dụng ConcurrentHashMap thay vì synchronized HashMap</li>
+              <li><strong>Use atomic variables:</strong> Cho các thao tác đơn giản</li>
+              <li><strong>Handle InterruptedException:</strong> Luôn xử lý exception này</li>
+              <li><strong>Use CompletableFuture:</strong> Cho asynchronous programming</li>
+            </ul>
+
+            <h2 class="post-section-title">Kết luận</h2>
+            <p>
+              Multithreading và concurrency là những khái niệm quan trọng trong Java development. 
+              Với việc hiểu rõ các kỹ thuật synchronization, Executor Framework, và CompletableFuture, 
+              bạn có thể xây dựng các ứng dụng Java hiệu quả và thread-safe.
+            </p>
+          </div>
+
+          <!-- Social Sharing -->
+          <hr class="my-4">
+          <div class="social-sharing">
+            <div class="d-flex align-items-center gap-3">
+              <span class="text-muted">Chia sẻ bài viết:</span>
+              <a href="#" class="social-share-btn facebook" title="Chia sẻ trên Facebook">
+                <i class="bi bi-facebook"></i>
+              </a>
+              <a href="#" class="social-share-btn twitter" title="Chia sẻ trên Twitter">
+                <i class="bi bi-twitter"></i>
+              </a>
+              <a href="#" class="social-share-btn linkedin" title="Chia sẻ trên LinkedIn">
+                <i class="bi bi-linkedin"></i>
+              </a>
+              <a href="#" class="social-share-btn link" title="Sao chép liên kết">
+                <i class="bi bi-link-45deg"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Posts Section -->
+  <section class="container py-4">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h3 class="recent-posts-title">Bài viết gần đây</h3>
+          <a href="../index.html#posts" class="btn btn-outline-primary btn-sm">Xem tất cả</a>
+        </div>
+        
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Java Spring Boot: Xây dựng RESTful API</h5>
+                <p class="recent-post-excerpt">Hướng dẫn chi tiết tạo RESTful API với Spring Boot...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/javascript-es6.jpg" alt="JavaScript ES6" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">JavaScript ES6+ và Modern Web Development</h5>
+                <p class="recent-post-excerpt">Khám phá các tính năng mới của JavaScript ES6+...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="recent-post-card">
+              <img src="../assets/images/post/nodejs-realtime.jpg" alt="Node.js Real-time" class="img-fluid rounded">
+              <div class="recent-post-content">
+                <h5 class="recent-post-title">Node.js và Real-time Web Applications</h5>
+                <p class="recent-post-excerpt">Xây dựng ứng dụng real-time với Node.js, Socket.io...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer text-center py-4 text-muted border-top border-secondary">
+    © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
+  </footer>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/index.js"></script>
+</body>
+</html>
