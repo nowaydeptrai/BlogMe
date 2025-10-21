@@ -59,6 +59,9 @@ class MusicPlayer {
     
     // Handle page visibility changes
     this.setupPageVisibilityHandlers();
+    
+    // Try to auto-resume music if it was playing
+    this.autoResumeMusic();
   }
   
   // Persistent state management
@@ -73,6 +76,22 @@ class MusicPlayer {
       // Restore audio time if available
       if (this.persistentState.currentTime > 0) {
         this.audio.currentTime = this.persistentState.currentTime;
+      }
+      
+      // Apply volume immediately
+      this.audio.volume = this.volume;
+      this.volumeSlider.value = this.volume * 100;
+      
+      // Try to resume playing if it was playing
+      if (this.isPlaying) {
+        this.audio.play().then(() => {
+          console.log('Music resumed from saved state');
+          this.updateUI();
+        }).catch(e => {
+          console.log('Auto-play prevented, will retry on user interaction:', e);
+          // Store that we want to play but couldn't due to browser policy
+          this.pendingPlay = true;
+        });
       }
     }
   }
@@ -126,13 +145,36 @@ class MusicPlayer {
         this.updatePlayerVisibility();
       }
     });
+    
+    // Save state periodically to ensure persistence
+    setInterval(() => {
+      if (this.isPlaying || this.audio.currentTime > 0) {
+        this.savePersistentState();
+      }
+    }, 1000); // Save every second
   }
   
+  autoResumeMusic() {
+    // Check if music was playing and try to resume
+    if (this.persistentState && this.persistentState.isPlaying) {
+      // Try to play immediately
+      this.audio.play().then(() => {
+        this.isPlaying = true;
+        this.updateUI();
+        console.log('Music auto-resumed successfully');
+      }).catch(e => {
+        console.log('Auto-resume prevented, will retry on user interaction:', e);
+        this.pendingPlay = true;
+      });
+    }
+  }
+
   setupAutoPlay() {
     // Try to play on first user interaction
     const playOnInteraction = () => {
-      if (!this.isPlaying && this.persistentState.isPlaying) {
+      if (this.pendingPlay || (!this.isPlaying && this.persistentState.isPlaying)) {
         this.play();
+        this.pendingPlay = false;
         document.removeEventListener('click', playOnInteraction);
         document.removeEventListener('touchstart', playOnInteraction);
       }
