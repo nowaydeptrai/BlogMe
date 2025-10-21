@@ -302,6 +302,40 @@ public class UserController {
     </div>
   </section>
 
+  <!-- 🎵 Music Player -->
+  <div id="music-player" class="music-player">
+    <audio id="background-music" loop>
+      <source src="../assets/music/profile.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    
+    <div class="music-controls">
+      <button id="music-toggle" class="music-btn" aria-label="Toggle music">
+        <i class="bi bi-play-fill" id="music-icon"></i>
+      </button>
+      
+      <div class="music-info">
+        <div class="music-title">Background Music</div>
+        <div class="music-time">
+          <span id="current-time">0:00</span> / <span id="total-time">0:00</span>
+        </div>
+      </div>
+      
+      <div class="volume-control">
+        <i class="bi bi-volume-up" id="volume-icon"></i>
+        <input type="range" id="volume-slider" min="0" max="100" value="50" class="volume-slider">
+      </div>
+    </div>
+    
+    <div class="music-visualizer">
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+      <div class="visualizer-bar"></div>
+    </div>
+  </div>
+
   <!-- ⚙️ Footer -->
   <footer class="footer text-center py-4 text-muted border-top border-secondary">
     © 2025 <strong>Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i>
@@ -310,5 +344,6 @@ public class UserController {
   <!-- Script -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/index.js"></script>
+  <script src="../assets/js/music.js"></script>
 </body>
 </html>
