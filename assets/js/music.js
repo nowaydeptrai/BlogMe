@@ -62,6 +62,11 @@ class MusicPlayer {
     
     // Try to auto-resume music if it was playing
     this.autoResumeMusic();
+    
+    // Additional attempt after a longer delay
+    setTimeout(() => {
+      this.attemptAutoPlay();
+    }, 2000);
   }
   
   // Persistent state management
@@ -157,13 +162,31 @@ class MusicPlayer {
   autoResumeMusic() {
     // Check if music was playing and try to resume
     if (this.persistentState && this.persistentState.isPlaying) {
-      // Try to play immediately
+      // Wait a bit for page to fully load
+      setTimeout(() => {
+        this.audio.play().then(() => {
+          this.isPlaying = true;
+          this.updateUI();
+          console.log('Music auto-resumed successfully');
+        }).catch(e => {
+          console.log('Auto-resume prevented, will retry on user interaction:', e);
+          this.pendingPlay = true;
+          // Show user that music is ready to play
+          this.showPlayMessage();
+        });
+      }, 500); // Wait 500ms for page to load
+    }
+  }
+  
+  attemptAutoPlay() {
+    // Try to play music if it was playing before
+    if (this.persistentState && this.persistentState.isPlaying && !this.isPlaying) {
       this.audio.play().then(() => {
         this.isPlaying = true;
         this.updateUI();
-        console.log('Music auto-resumed successfully');
+        console.log('Music auto-played after delay');
       }).catch(e => {
-        console.log('Auto-resume prevented, will retry on user interaction:', e);
+        console.log('Auto-play still prevented:', e);
         this.pendingPlay = true;
       });
     }
@@ -171,17 +194,31 @@ class MusicPlayer {
 
   setupAutoPlay() {
     // Try to play on first user interaction
-    const playOnInteraction = () => {
+    const playOnInteraction = (e) => {
       if (this.pendingPlay || (!this.isPlaying && this.persistentState.isPlaying)) {
         this.play();
         this.pendingPlay = false;
+        // Remove listeners after successful play
         document.removeEventListener('click', playOnInteraction);
         document.removeEventListener('touchstart', playOnInteraction);
+        document.removeEventListener('keydown', playOnInteraction);
       }
     };
     
+    // Add multiple event listeners for better coverage
     document.addEventListener('click', playOnInteraction);
     document.addEventListener('touchstart', playOnInteraction);
+    document.addEventListener('keydown', playOnInteraction);
+    
+    // Also try to play on scroll (user interaction)
+    let scrollAttempted = false;
+    window.addEventListener('scroll', () => {
+      if (!scrollAttempted && (this.pendingPlay || (!this.isPlaying && this.persistentState.isPlaying))) {
+        scrollAttempted = true;
+        this.play();
+        this.pendingPlay = false;
+      }
+    });
   }
   
   togglePlayPause() {
@@ -335,20 +372,31 @@ class MusicPlayer {
   showPlayMessage() {
     // Create a temporary message
     const message = document.createElement('div');
-    message.innerHTML = '🎵 Click anywhere to start music';
+    message.innerHTML = '🎵 Nhạc đã sẵn sàng - Click để phát';
     message.style.cssText = `
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, #667eea, #764ba2);
       color: white;
-      padding: 15px 25px;
-      border-radius: 10px;
+      padding: 12px 20px;
+      border-radius: 25px;
       z-index: 1001;
       font-size: 14px;
-      animation: fadeInOut 3s ease-in-out;
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      animation: slideInRight 0.5s ease-out, fadeOut 2.5s ease-in 0.5s;
+      cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.2);
     `;
+    
+    // Make it clickable to start music
+    message.addEventListener('click', () => {
+      this.play();
+      if (message.parentNode) {
+        message.parentNode.removeChild(message);
+      }
+    });
     
     document.body.appendChild(message);
     
@@ -368,12 +416,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// Add CSS for fade animation
+// Add CSS for animations
 const style = document.createElement('style');
 style.textContent = `
   @keyframes fadeInOut {
     0%, 100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     20%, 80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  @keyframes slideInRight {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+  
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
   }
 `;
 document.head.appendChild(style);
