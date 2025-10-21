@@ -1,4 +1,4 @@
-// 🎵 Music System
+// 🎵 Persistent Music System
 class MusicPlayer {
   constructor() {
     this.audio = document.getElementById('background-music');
@@ -9,15 +9,29 @@ class MusicPlayer {
     this.currentTimeEl = document.getElementById('current-time');
     this.totalTimeEl = document.getElementById('total-time');
     this.musicPlayer = document.getElementById('music-player');
+    this.musicBubble = document.getElementById('music-bubble');
+    this.bubbleIcon = document.getElementById('bubble-icon');
     
     this.isPlaying = false;
     this.isMuted = false;
     this.volume = 0.5;
+    this.isPlayerVisible = false;
+    
+    // Persistent state
+    this.persistentState = {
+      isPlaying: false,
+      volume: 0.5,
+      currentTime: 0,
+      isPlayerVisible: false
+    };
     
     this.init();
   }
   
   init() {
+    // Load persistent state
+    this.loadPersistentState();
+    
     // Set initial volume
     this.audio.volume = this.volume;
     this.volumeSlider.value = this.volume * 100;
@@ -25,6 +39,7 @@ class MusicPlayer {
     // Event listeners
     this.toggleBtn.addEventListener('click', () => this.togglePlayPause());
     this.volumeSlider.addEventListener('input', (e) => this.setVolume(e.target.value / 100));
+    this.musicBubble.addEventListener('click', () => this.togglePlayer());
     
     // Audio events
     this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
@@ -38,12 +53,80 @@ class MusicPlayer {
     
     // Initialize visualizer
     this.initVisualizer();
+    
+    // Initialize player visibility
+    this.updatePlayerVisibility();
+    
+    // Handle page visibility changes
+    this.setupPageVisibilityHandlers();
+  }
+  
+  // Persistent state management
+  loadPersistentState() {
+    const savedState = localStorage.getItem('musicPlayerState');
+    if (savedState) {
+      this.persistentState = JSON.parse(savedState);
+      this.isPlaying = this.persistentState.isPlaying;
+      this.volume = this.persistentState.volume;
+      this.isPlayerVisible = this.persistentState.isPlayerVisible;
+      
+      // Restore audio time if available
+      if (this.persistentState.currentTime > 0) {
+        this.audio.currentTime = this.persistentState.currentTime;
+      }
+    }
+  }
+  
+  savePersistentState() {
+    this.persistentState = {
+      isPlaying: this.isPlaying,
+      volume: this.volume,
+      currentTime: this.audio.currentTime,
+      isPlayerVisible: this.isPlayerVisible
+    };
+    localStorage.setItem('musicPlayerState', JSON.stringify(this.persistentState));
+  }
+  
+  // Player visibility toggle
+  togglePlayer() {
+    this.isPlayerVisible = !this.isPlayerVisible;
+    this.updatePlayerVisibility();
+    this.savePersistentState();
+  }
+  
+  updatePlayerVisibility() {
+    if (this.isPlayerVisible) {
+      this.musicPlayer.classList.remove('hide');
+      this.musicPlayer.classList.add('show');
+    } else {
+      this.musicPlayer.classList.remove('show');
+      this.musicPlayer.classList.add('hide');
+    }
+  }
+  
+  setupPageVisibilityHandlers() {
+    // Save state when page is about to unload
+    window.addEventListener('beforeunload', () => {
+      this.savePersistentState();
+    });
+    
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        this.savePersistentState();
+      } else {
+        // Restore state when page becomes visible
+        this.loadPersistentState();
+        this.updateUI();
+        this.updatePlayerVisibility();
+      }
+    });
   }
   
   setupAutoPlay() {
     // Try to play on first user interaction
     const playOnInteraction = () => {
-      if (!this.isPlaying) {
+      if (!this.isPlaying && this.persistentState.isPlaying) {
         this.play();
         document.removeEventListener('click', playOnInteraction);
         document.removeEventListener('touchstart', playOnInteraction);
@@ -66,6 +149,7 @@ class MusicPlayer {
     this.audio.play().then(() => {
       this.isPlaying = true;
       this.updateUI();
+      this.savePersistentState();
     }).catch(error => {
       console.log('Auto-play was prevented:', error);
       // Show user interaction required message
@@ -77,12 +161,14 @@ class MusicPlayer {
     this.audio.pause();
     this.isPlaying = false;
     this.updateUI();
+    this.savePersistentState();
   }
   
   setVolume(volume) {
     this.volume = volume;
     this.audio.volume = volume;
     this.updateVolumeIcon();
+    this.savePersistentState();
   }
   
   updateVolumeIcon() {
@@ -99,9 +185,13 @@ class MusicPlayer {
     if (this.isPlaying) {
       this.musicIcon.className = 'bi bi-pause-fill';
       this.musicPlayer.classList.add('playing');
+      this.musicBubble.classList.add('playing');
+      this.bubbleIcon.className = 'bi bi-pause-fill';
     } else {
       this.musicIcon.className = 'bi bi-play-fill';
       this.musicPlayer.classList.remove('playing');
+      this.musicBubble.classList.remove('playing');
+      this.bubbleIcon.className = 'bi bi-music-note';
     }
   }
   
@@ -111,6 +201,11 @@ class MusicPlayer {
     
     this.currentTimeEl.textContent = current;
     this.totalTimeEl.textContent = total;
+    
+    // Save state periodically
+    if (this.audio.currentTime % 5 < 0.1) { // Every 5 seconds
+      this.savePersistentState();
+    }
   }
   
   updateDuration() {
