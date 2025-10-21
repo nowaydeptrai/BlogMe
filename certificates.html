@@ -24,33 +24,8 @@
   <!-- Nền vũ trụ -->
   <canvas id="starfield"></canvas>
 
-  <!-- 🌙 Menu -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top px-3">
-    <a class="navbar-brand fw-bold text-primary" href="index.html">Noway</a>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-      <i class="bi bi-list fs-2 text-light"></i>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="menu">
-      <ul class="navbar-nav gap-3 align-items-center">
-        <li class="nav-item"><a class="nav-link" href="index.html#about">Giới thiệu</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.html#posts">Blog</a></li>
-        <li class="nav-item"><a class="nav-link active" href="certificates.html">Chứng chỉ</a></li>
-        <li class="nav-item"><a class="nav-link" href="mailto:tandung29022004@gmail.com">Liên hệ</a></li>
-        <li class="nav-item">
-          <a class="btn btn-outline-primary px-3 py-1" href="https://github.com/nowaydeptrai" target="_blank">
-            <i class="bi bi-github"></i> GitHub
-          </a>
-        </li>
-        <!-- 🌓 Nút chuyển chế độ sáng/tối -->
-        <li class="nav-item">
-          <button id="theme-toggle" class="btn btn-outline-light rounded-3 ms-3">
-            <i class="bi bi-moon-fill" id="theme-icon"></i>
-          </button>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <!-- 🌙 Navigation Container -->
+  <div id="navbar-container"></div>
 
   <!-- 🏆 Chứng chỉ Section -->
   <section class="container py-5 mt-5">
@@ -196,16 +171,24 @@
 
   </section>
 
+  <!-- 🎵 Music Bubble -->
+  <div id="music-bubble" class="music-bubble" aria-label="Toggle music player">
+    <i class="bi bi-music-note" id="bubble-icon"></i>
+    <div class="bubble-visualizer">
+      <div class="mini-bar"></div>
+      <div class="mini-bar"></div>
+      <div class="mini-bar"></div>
+      <div class="mini-bar"></div>
+      <div class="mini-bar"></div>
+    </div>
+  </div>
+
   <!-- 🎵 Music Player -->
   <div id="music-player" class="music-player">
     <audio id="background-music" loop>
       <source src="assets/music/profile.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
-    
-    <button id="music-close-btn" class="music-close-btn" aria-label="Close music player">
-      <i class="bi bi-x-lg"></i>
-    </button>
     
     <div class="music-controls">
       <button id="music-toggle" class="music-btn" aria-label="Toggle music">
@@ -241,6 +224,7 @@
 
   <!-- Script -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/navbar.js"></script>
   <script src="assets/js/index.js"></script>
   <script src="assets/js/music.js"></script>
   <script>
