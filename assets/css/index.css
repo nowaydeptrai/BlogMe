@@ -1908,7 +1908,21 @@ body {
 .contact-form-card {
   min-height: 600px;
   max-width: 100%;
-  padding: 2.5rem;
+  padding: 3rem;
+  margin: 0 1rem;
+}
+
+/* Full width layout for large screens */
+@media (min-width: 1400px) {
+  .contact-form-card {
+    padding: 3.5rem;
+    margin: 0 2rem;
+  }
+  
+  .contact-info-card {
+    padding: 2.5rem;
+    margin: 0 1rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1955,7 +1969,28 @@ body {
   min-height: 500px;
   max-height: 600px;
   overflow-y: auto;
-  padding: 2rem;
+  padding: 2.5rem;
+  margin: 0 1rem;
+}
+
+/* Large screen optimizations */
+@media (min-width: 1200px) {
+  .contact-form .form-control,
+  .contact-form .form-select {
+    min-height: 55px;
+    font-size: 1.1rem;
+    padding: 18px 24px;
+  }
+  
+  .contact-form textarea.form-control {
+    min-height: 140px;
+  }
+  
+  .contact-form .btn {
+    min-height: 55px;
+    font-size: 1.2rem;
+    padding: 15px 35px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1971,11 +2006,42 @@ body {
   padding: 1.25rem;
 }
 
+/* Ultra-wide screen optimizations */
+@media (min-width: 1600px) {
+  .contact-form-card {
+    padding: 4rem;
+    margin: 0 3rem;
+  }
+  
+  .contact-info-card {
+    padding: 3rem;
+    margin: 0 2rem;
+  }
+  
+  .contact-form .form-control,
+  .contact-form .form-select {
+    min-height: 60px;
+    font-size: 1.15rem;
+    padding: 20px 28px;
+  }
+  
+  .contact-form textarea.form-control {
+    min-height: 160px;
+  }
+  
+  .contact-form .btn {
+    min-height: 60px;
+    font-size: 1.25rem;
+    padding: 18px 40px;
+  }
+}
+
 /* Responsive adjustments */
 @media (max-width: 1200px) {
   .contact-form-card,
   .contact-info-card {
     min-height: auto;
+    margin: 0 0.5rem;
   }
 }
 
