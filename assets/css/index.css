@@ -1904,12 +1904,104 @@ body {
   color: #667eea;
 }
 
+/* Contact form layout improvements */
+.contact-form-card {
+  min-height: 600px;
+  max-width: 100%;
+  padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .contact-form-card {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-form-card {
+    padding: 1.5rem;
+  }
+}
+
+.contact-form .form-control,
+.contact-form .form-select {
+  min-height: 50px;
+  font-size: 1rem;
+  padding: 15px 20px;
+}
+
+.contact-form textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.contact-form .btn {
+  min-height: 50px;
+  font-size: 1.1rem;
+  padding: 12px 30px;
+}
+
+/* Form field spacing */
+.contact-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form .row.g-3 {
+  gap: 1rem;
+}
+
+/* Contact info card improvements */
+.contact-info-card {
+  min-height: 500px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 2rem;
+}
+
+@media (max-width: 768px) {
+  .contact-info-card {
+    padding: 1.5rem;
+    min-height: auto;
+    max-height: none;
+  }
+}
+
+.contact-info-item {
+  min-height: 80px;
+  padding: 1.25rem;
+}
+
 /* Responsive adjustments */
+@media (max-width: 1200px) {
+  .contact-form-card,
+  .contact-info-card {
+    min-height: auto;
+  }
+}
+
 @media (max-width: 768px) {
   .contact-form-card,
   .contact-info-card,
   .faq-section {
     padding: 1.5rem;
+    min-height: auto;
+  }
+  
+  .contact-form .form-control,
+  .contact-form .form-select {
+    min-height: 45px;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+  }
+  
+  .contact-form textarea.form-control {
+    min-height: 100px;
+  }
+  
+  .contact-form .btn {
+    min-height: 45px;
+    font-size: 1rem;
+    padding: 10px 25px;
   }
   
   .social-links-grid {
@@ -1919,11 +2011,36 @@ body {
   .contact-info-item {
     flex-direction: column;
     text-align: center;
+    min-height: auto;
   }
   
   .contact-info-icon {
     margin-right: 0;
     margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .contact-form-card,
+  .contact-info-card {
+    padding: 1rem;
+  }
+  
+  .contact-form .form-control,
+  .contact-form .form-select {
+    min-height: 40px;
+    font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+  
+  .contact-form textarea.form-control {
+    min-height: 80px;
+  }
+  
+  .contact-form .btn {
+    min-height: 40px;
+    font-size: 0.95rem;
+    padding: 8px 20px;
   }
 }
 
