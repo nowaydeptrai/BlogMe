@@ -135,7 +135,7 @@ body {
   color: #212529;
 }
 
-/* Starfield canvas */
+/* Enhanced Starfield canvas - nhẹ nhàng và tinh tế */
 #starfield {
   position: fixed;
   top: 0;
@@ -144,6 +144,167 @@ body {
   height: 100%;
   z-index: -1;
   pointer-events: none;
+  background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0a0a0a 100%);
+  animation: cosmicPulse 30s ease-in-out infinite; /* Chậm hơn */
+  opacity: 0.8; /* Nhẹ nhàng hơn */
+  visibility: visible;
+  display: block;
+}
+
+/* Đảm bảo canvas hiển thị */
+canvas#starfield {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Cosmic background animation - nhẹ nhàng */
+@keyframes cosmicPulse {
+  0%, 100% {
+    background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 50%, #0a0a0a 100%);
+  }
+  50% {
+    background: radial-gradient(ellipse at center, #1f1f2e 0%, #1a1a2e 50%, #0f0f0f 100%);
+  }
+}
+
+/* Enhanced body background for cosmic theme */
+body {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Cosmic overlay effects */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(240, 147, 251, 0.05) 0%, transparent 50%);
+  z-index: -1;
+  pointer-events: none;
+  animation: cosmicShift 30s ease-in-out infinite;
+}
+
+@keyframes cosmicShift {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1) rotate(180deg);
+  }
+}
+
+/* Cosmic glow effects for cards */
+.blog-card, .certificate-card, .language-card, .about-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-card::before, .certificate-card::before, .language-card::before, .about-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blog-card:hover::before, .certificate-card:hover::before, .language-card:hover::before, .about-card:hover::before {
+  opacity: 1;
+  animation: cosmicGlow 2s ease-in-out infinite;
+}
+
+@keyframes cosmicGlow {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.1;
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+    opacity: 0.3;
+  }
+}
+
+/* Enhanced text gradients for cosmic theme */
+.text-gradient, .text-gradient-blog, .text-gradient-lang, .text-gradient-cert, .text-gradient-contact {
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: cosmicGradient 8s ease-in-out infinite;
+}
+
+@keyframes cosmicGradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Cosmic particle effects */
+.cosmic-particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.cosmic-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: particleFloat 20s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(90vh) translateX(10px) scale(1);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(10vh) translateX(-10px) scale(1);
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(0);
+    opacity: 0;
+  }
 }
 
 /* Navbar */
@@ -2921,7 +3082,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 999; /* Lower than back-to-top button */
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   border: 2px solid rgba(255, 255, 255, 0.2);

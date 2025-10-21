@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Noway | Developer Portfolio</title>
+
+  <!-- 🌌 Bootstrap + Icons + Animate.css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+
+  <!-- 🌠 Custom style -->
+  <link rel="stylesheet" href="assets/css/index.css" />
+  
+  <!-- 🎯 Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/images/ava/noway.jpg">
+  <link rel="shortcut icon" type="image/x-icon" href="assets/images/ava/noway.jpg">
+  <link rel="apple-touch-icon" href="assets/images/ava/noway.jpg">
+  <meta name="msapplication-TileImage" content="assets/images/ava/noway.jpg">
+</head>
+
+<body>
+  <!-- Nền vũ trụ -->
+  <canvas id="starfield"></canvas>
+
+  <!-- 🌙 Navigation Container -->
+  <div id="navbar-container"></div>
+
+  <!-- 📰 Blog Section -->
+  <section class="container py-5 mt-5">
+    <div class="row">
+      <div class="col-12 text-center mb-5">
+        <h1 class="fw-bold mb-3">
+          <span class="text-gradient-blog typewriter-text" data-text="Blog cá nhân">Blog cá nhân</span>
+        </h1>
+        <p class="lead text-light">Chia sẻ kiến thức và kinh nghiệm về lập trình, công nghệ</p>
+      </div>
+    </div>
+
+    <!-- Blog Posts Grid -->
+    <div class="row g-4">
+      <!-- Post 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/java-spring-boot.jpg" alt="Java Spring Boot" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post1.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 20 Tháng 1, 2025
+              </span>
+              <span class="blog-category">Java</span>
+            </div>
+            <h5 class="blog-title">Java Spring Boot: Xây dựng RESTful API</h5>
+            <p class="blog-excerpt">Hướng dẫn chi tiết về cách xây dựng RESTful API với Spring Boot, từ cơ bản đến nâng cao...</p>
+            <div class="blog-tags">
+              <span class="tag">Java</span>
+              <span class="tag">Spring Boot</span>
+              <span class="tag">API</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/javascript-es6.jpg" alt="JavaScript ES6+" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post2.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 18 Tháng 1, 2025
+              </span>
+              <span class="blog-category">JavaScript</span>
+            </div>
+            <h5 class="blog-title">JavaScript ES6+ và Modern Web Development</h5>
+            <p class="blog-excerpt">Khám phá các tính năng mới của JavaScript ES6+ và cách áp dụng vào phát triển web hiện đại...</p>
+            <div class="blog-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">ES6+</span>
+              <span class="tag">Modern Web</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/react-hooks.jpg" alt="React Hooks" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post3.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 15 Tháng 1, 2025
+              </span>
+              <span class="blog-category">React</span>
+            </div>
+            <h5 class="blog-title">React Hooks: Quản lý State hiệu quả</h5>
+            <p class="blog-excerpt">Tìm hiểu về React Hooks và cách sử dụng chúng để quản lý state trong ứng dụng React...</p>
+            <div class="blog-tags">
+              <span class="tag">React</span>
+              <span class="tag">Hooks</span>
+              <span class="tag">State Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 4 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/nodejs-realtime.jpg" alt="Node.js Realtime" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post4.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 12 Tháng 1, 2025
+              </span>
+              <span class="blog-category">Node.js</span>
+            </div>
+            <h5 class="blog-title">Node.js: Xây dựng ứng dụng Realtime</h5>
+            <p class="blog-excerpt">Hướng dẫn xây dựng ứng dụng realtime với Node.js và Socket.io...</p>
+            <div class="blog-tags">
+              <span class="tag">Node.js</span>
+              <span class="tag">Socket.io</span>
+              <span class="tag">Realtime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 5 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/network-security.jpg" alt="Network Security" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post5.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 10 Tháng 1, 2025
+              </span>
+              <span class="blog-category">Network</span>
+            </div>
+            <h5 class="blog-title">Network Security: Bảo mật mạng doanh nghiệp</h5>
+            <p class="blog-excerpt">Các biện pháp bảo mật mạng cơ bản và nâng cao cho doanh nghiệp...</p>
+            <div class="blog-tags">
+              <span class="tag">Network Security</span>
+              <span class="tag">Enterprise</span>
+              <span class="tag">Security</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post 6 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="blog-card animate__animated animate__fadeInUp">
+          <div class="blog-image">
+            <img src="assets/images/post/lan-wan-design.jpg" alt="LAN/WAN Design" class="img-fluid">
+            <div class="blog-overlay">
+              <a href="posts/post6.html" class="btn btn-primary">Đọc bài viết</a>
+            </div>
+          </div>
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="bi bi-calendar3 me-1"></i> 8 Tháng 1, 2025
+              </span>
+              <span class="blog-category">Network</span>
+            </div>
+            <h5 class="blog-title">Thiết kế mạng LAN/WAN cho doanh nghiệp</h5>
+            <p class="blog-excerpt">Hướng dẫn thiết kế mạng LAN/WAN hiệu quả cho doanh nghiệp vừa và nhỏ...</p>
+            <div class="blog-tags">
+              <span class="tag">LAN</span>
+              <span class="tag">WAN</span>
+              <span class="tag">Network Design</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Load More Button -->
+    <div class="text-center mt-5">
+      <button class="btn btn-outline-primary btn-lg">
+        <i class="bi bi-arrow-clockwise me-2"></i> Tải thêm bài viết
+      </button>
+    </div>
+  </section>
+
+  <!-- ⚙️ Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <p class="text-muted mb-0">
+            © 2025 <strong class="text-light">Nguyen Tan Dung (Noway)</strong> | Made with <i class="bi bi-cup-hot text-warning"></i> and <i class="bi bi-heart-fill text-danger"></i>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🔝 Back to Top Button -->
+  <button id="back-to-top" class="back-to-top-btn" aria-label="Back to top">
+    <i class="bi bi-arrow-up"></i>
+    <div class="progress-ring">
+      <svg class="progress-ring-svg" viewBox="0 0 60 60" width="100%" height="100%">
+        <circle class="progress-ring-circle" cx="30" cy="30" r="25" fill="transparent" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+        <circle class="progress-ring-fill" cx="30" cy="30" r="25" fill="transparent" stroke="url(#gradient)" stroke-width="3" stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </button>
+
+  <!-- Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/navbar.js"></script>
+  <script src="assets/js/index.js"></script>
+</body>
+</html>
