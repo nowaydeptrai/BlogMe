@@ -3336,6 +3336,512 @@ body::before {
   text-shadow: none !important;
 }
 
+/* Timeline Light Mode */
+[data-theme="light"] .timeline-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .timeline-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-color: rgba(13, 110, 253, 0.3);
+}
+
+[data-theme="light"] .timeline-title {
+  color: #212529;
+}
+
+[data-theme="light"] .timeline-date {
+  color: #6c757d;
+  background: rgba(13, 110, 253, 0.1);
+  border: 1px solid rgba(13, 110, 253, 0.2);
+}
+
+[data-theme="light"] .timeline-description {
+  color: #495057;
+}
+
+[data-theme="light"] .timeline-dot {
+  background: linear-gradient(45deg, #0d6efd, #6f42c1);
+  border: 4px solid #ffffff;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.3);
+}
+
+[data-theme="light"] .timeline-container::before {
+  background: linear-gradient(180deg, #0d6efd, #6f42c1, #dc3545);
+}
+
+/* Timeline Styles */
+.timeline-container {
+  position: relative;
+  padding: 2rem 0;
+  overflow: hidden;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 60%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+  animation: cosmicBackground 20s ease-in-out infinite;
+}
+
+@keyframes cosmicBackground {
+  0%, 100% {
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, rgba(79, 172, 254, 0.05) 0%, transparent 50%);
+  }
+  33% {
+    background: 
+      radial-gradient(circle at 60% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 20% 70%, rgba(240, 147, 251, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 40%, rgba(79, 172, 254, 0.1) 0%, transparent 50%);
+  }
+  66% {
+    background: 
+      radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 90% 20%, rgba(240, 147, 251, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 10% 50%, rgba(79, 172, 254, 0.08) 0%, transparent 50%);
+  }
+}
+
+/* Cosmic timeline line with nebula effect */
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, 
+    #667eea 0%, 
+    #764ba2 25%, 
+    #f093fb 50%, 
+    #f5576c 75%, 
+    #4facfe 100%);
+  transform: translateX(-50%);
+  z-index: 1;
+  border-radius: 2px;
+  box-shadow: 
+    0 0 10px rgba(102, 126, 234, 0.5),
+    0 0 20px rgba(118, 75, 162, 0.3),
+    0 0 30px rgba(240, 147, 251, 0.2);
+  animation: cosmicFlow 4s ease-in-out infinite;
+}
+
+/* Cosmic flow animation */
+@keyframes cosmicFlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 10px rgba(102, 126, 234, 0.5),
+      0 0 20px rgba(118, 75, 162, 0.3),
+      0 0 30px rgba(240, 147, 251, 0.2);
+  }
+  50% {
+    box-shadow: 
+      0 0 15px rgba(102, 126, 234, 0.7),
+      0 0 25px rgba(118, 75, 162, 0.5),
+      0 0 35px rgba(240, 147, 251, 0.3);
+  }
+}
+
+/* Floating cosmic particles */
+.timeline-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  transform: translateX(-50%);
+  z-index: 0;
+  animation: cosmicFloat 6s ease-in-out infinite;
+}
+
+@keyframes cosmicFloat {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Additional floating stars */
+.timeline-container {
+  position: relative;
+}
+
+/* Add star particles using a separate element */
+.timeline-container .star-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  z-index: 0;
+  animation: starTwinkle 8s ease-in-out infinite;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@keyframes starTwinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(-10px);
+  }
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.timeline-item:nth-child(odd) {
+  flex-direction: row;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.timeline-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+  border: 3px solid #ffffff;
+  box-shadow: 
+    0 0 0 4px rgba(102, 126, 234, 0.3),
+    0 0 20px rgba(102, 126, 234, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+  animation: cosmicPulse 3s ease-in-out infinite;
+  position: relative;
+}
+
+/* Planet-like surface details */
+.timeline-dot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 30%;
+  width: 3px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 
+    2px 2px 0 rgba(255, 255, 255, 0.3),
+    -1px -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.timeline-dot::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  right: 25%;
+  width: 2px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+@keyframes cosmicPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 0 4px rgba(102, 126, 234, 0.3),
+      0 0 20px rgba(102, 126, 234, 0.4),
+      inset 0 0 10px rgba(255, 255, 255, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 8px rgba(102, 126, 234, 0.1),
+      0 0 30px rgba(102, 126, 234, 0.6),
+      inset 0 0 15px rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+  }
+}
+
+/* Different planet styles for each timeline item */
+.timeline-item:nth-child(1) .timeline-dot {
+  background: linear-gradient(45deg, #667eea, #4facfe);
+}
+
+.timeline-item:nth-child(2) .timeline-dot {
+  background: linear-gradient(45deg, #f093fb, #f5576c);
+}
+
+.timeline-item:nth-child(3) .timeline-dot {
+  background: linear-gradient(45deg, #43e97b, #38f9d7);
+}
+
+.timeline-item:nth-child(4) .timeline-dot {
+  background: linear-gradient(45deg, #fa709a, #fee140);
+}
+
+.timeline-content {
+  flex: 1;
+  max-width: 45%;
+  padding: 0 2rem;
+}
+
+.timeline-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Cosmic nebula background */
+.timeline-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.1) 0%, 
+    rgba(118, 75, 162, 0.1) 25%,
+    rgba(240, 147, 251, 0.1) 50%,
+    rgba(245, 87, 108, 0.1) 75%,
+    rgba(79, 172, 254, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  border-radius: 20px;
+}
+
+/* Floating cosmic particles */
+.timeline-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.05) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: cosmicDrift 8s linear infinite;
+}
+
+@keyframes cosmicDrift {
+  0% {
+    transform: rotate(0deg) translateX(0);
+  }
+  100% {
+    transform: rotate(360deg) translateX(0);
+  }
+}
+
+.timeline-card:hover::before {
+  opacity: 1;
+}
+
+.timeline-card:hover::after {
+  opacity: 1;
+}
+
+.timeline-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(102, 126, 234, 0.2),
+    0 0 60px rgba(118, 75, 162, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* Cosmic glow effect on hover */
+.timeline-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.timeline-title {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.timeline-date {
+  color: #b8c5d1;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: rgba(102, 126, 234, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.timeline-description {
+  color: #ffffff;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.timeline-tags .badge {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  font-weight: 500;
+}
+
+/* Timeline gradient text */
+.text-gradient-timeline {
+  position: relative;
+  background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 3s ease-in-out infinite;
+  font-weight: 800;
+  display: inline-block;
+}
+
+/* Cosmic title container */
+.cosmic-title-container {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.cosmic-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: cosmicFloat 4s ease-in-out infinite;
+  display: inline-block;
+}
+
+.cosmic-subtitle {
+  margin: 1rem 0;
+}
+
+.cosmic-text {
+  background: linear-gradient(45deg, #667eea, #f093fb, #f5576c);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 2s ease-in-out infinite;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Cosmic marker icons */
+.cosmic-marker-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  z-index: 3;
+  animation: cosmicRotate 6s linear infinite;
+}
+
+@keyframes cosmicRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Cosmic small icons in titles */
+.cosmic-icon-small {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  animation: cosmicBounce 2s ease-in-out infinite;
+}
+
+@keyframes cosmicBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Cosmic highlights */
+.cosmic-highlight {
+  background: linear-gradient(45deg, #667eea, #f093fb);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 2s ease-in-out infinite;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* Responsive Timeline */
+@media (max-width: 768px) {
+  .timeline-container::before {
+    left: 30px;
+  }
+  
+  .timeline-item {
+    flex-direction: row !important;
+    padding-left: 4rem;
+  }
+  
+  .timeline-marker {
+    left: 30px;
+  }
+  
+  .timeline-content {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .timeline-card {
+    padding: 1.5rem;
+  }
+}
+
 /* Enhanced footer text contrast for dark mode */
 [data-theme="dark"] .footer .text-light {
   color: #ffffff !important;

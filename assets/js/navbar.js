@@ -103,6 +103,8 @@ class NavbarLoader {
             link.setAttribute('href', '../index.html#about');
           } else if (href === 'index.html#posts') {
             link.setAttribute('href', '../index.html#posts');
+          } else if (href === 'index.html#timeline') {
+            link.setAttribute('href', '../index.html#timeline');
           }
         }
       });
@@ -183,6 +185,9 @@ class NavbarLoader {
             </li>
             <li class="nav-item">
               <a class="nav-link" href="${postsPath}">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="${homePath}#timeline">Timeline</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="${certPath}">Chứng chỉ</a>
