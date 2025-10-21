@@ -115,16 +115,23 @@ const posts = [
 let currentSlide = 0;
 let totalSlides = 0;
 let autoSlideInterval = null;
-const SLIDE_INTERVAL = 5000; // 5 seconds
+const SLIDE_INTERVAL = 2500; // ~2.5 seconds per request
 
 // Render posts to the page with slider
+function getPostsPerSlide() {
+    const width = window.innerWidth;
+    if (width < 576) return 1;      // Mobile
+    if (width < 992) return 2;      // Tablet
+    return 3;                       // Desktop
+}
+
 function renderPosts() {
     const blogSlider = document.getElementById('blog-slider');
     const sliderDots = document.getElementById('sliderDots');
     if (!blogSlider || !sliderDots) return;
     
-    // Calculate slides needed (3 posts per slide)
-    const postsPerSlide = 3;
+    // Calculate slides needed (responsive posts per slide)
+    const postsPerSlide = getPostsPerSlide();
     totalSlides = Math.ceil(posts.length / postsPerSlide);
     
     // Create slides
@@ -140,7 +147,7 @@ function renderPosts() {
         slide.innerHTML = `
             <div class="row g-4">
                 ${slidePosts.map(post => `
-                    <div class="col-md-4 mb-4">
+                    <div class="col-12 col-md-6 col-lg-4 mb-4">
                         <div class="post-card animate__animated animate__fadeInUp">
                             <!-- Thumbnail -->
                             <div class="post-thumbnail mb-3">
@@ -210,6 +217,15 @@ function initSlider() {
     
     // Touch/swipe support
     addTouchSupport();
+
+    // Pause when tab hidden, resume when active
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            pauseAutoSlide();
+        } else {
+            startAutoSlide();
+        }
+    });
 }
 
 // Navigation functions
@@ -301,3 +317,16 @@ function addTouchSupport() {
 
 // Initialize posts when DOM is loaded
 document.addEventListener('DOMContentLoaded', renderPosts);
+
+// Re-render slider on resize with debounce to keep it responsive
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        const prevSlideIndex = currentSlide;
+        renderPosts();
+        // ensure index stays valid after layout change
+        currentSlide = Math.min(prevSlideIndex, totalSlides - 1);
+        updateSlider();
+    }, 200);
+});
