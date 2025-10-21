@@ -76,6 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Avatar double-click functionality
     initAvatarToggle();
+    
+    // Code copy functionality
+    initCodeCopyButtons();
 });
 
 // Starfield creation function
@@ -368,5 +371,78 @@ function initAvatarToggle() {
             profileImage.style.height = imageSize + 'px';
         };
         img.src = avatars[currentAvatarIndex];
+    }
+}
+
+// Code Copy Functionality
+function initCodeCopyButtons() {
+    // Find all code blocks and add copy buttons
+    const codeBlocks = document.querySelectorAll('.code-block');
+    
+    codeBlocks.forEach((codeBlock, index) => {
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'code-copy-btn';
+        copyBtn.innerHTML = '<i class="bi bi-copy"></i> Copy';
+        copyBtn.setAttribute('data-code-index', index);
+        
+        // Add button to code block
+        codeBlock.appendChild(copyBtn);
+        
+        // Add click event listener
+        copyBtn.addEventListener('click', function() {
+            copyCodeToClipboard(codeBlock, copyBtn);
+        });
+    });
+}
+
+async function copyCodeToClipboard(codeBlock, button) {
+    const codeElement = codeBlock.querySelector('code');
+    if (!codeElement) return;
+    
+    // Get the text content
+    const codeText = codeElement.textContent || codeElement.innerText;
+    
+    try {
+        // Try modern Clipboard API first
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(codeText);
+        } else {
+            // Fallback for older browsers
+            const textarea = document.createElement('textarea');
+            textarea.value = codeText;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-999999px';
+            textarea.style.top = '-999999px';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        
+        // Update button to show success
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-check"></i> Copied!';
+        button.classList.add('copied');
+        
+        // Reset button after 2 seconds
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.classList.remove('copied');
+        }, 2000);
+        
+    } catch (err) {
+        console.error('Failed to copy code: ', err);
+        
+        // Show error state
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="bi bi-x"></i> Error';
+        button.style.background = 'rgba(239, 68, 68, 0.8)';
+        
+        setTimeout(() => {
+            button.innerHTML = originalText;
+            button.style.background = '';
+        }, 2000);
     }
 }
