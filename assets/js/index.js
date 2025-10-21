@@ -82,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Avatar double-click functionality
     initAvatarToggle();
     
+    // Planets animation
+    initPlanetsAnimation();
+    
     // Code copy functionality
     initCodeCopyButtons();
 });
@@ -668,115 +671,12 @@ function getTypewriterSpeed(element) {
     return 50; // Default speed
 }
 
-// Avatar Toggle Functionality
+// Avatar Toggle Functionality - DISABLED
+// Avatar switching functionality has been removed to focus on spaceship effect
 function initAvatarToggle() {
-    const profileImage = document.getElementById('profileImage');
-    const profileContainer = document.getElementById('profileContainer');
-    
-    if (!profileImage || !profileContainer) return;
-    
-    // Avatar images array
-    const avatars = [
-        'assets/images/ava/noway.jpg',
-        'assets/images/ava/noway2.jpg'
-    ];
-    
-    let currentAvatarIndex = 0;
-    let clickCount = 0;
-    let clickTimer = null;
-    
-    // Double-click detection
-    profileImage.addEventListener('click', function(e) {
-        e.preventDefault();
-        clickCount++;
-        
-        if (clickCount === 1) {
-            clickTimer = setTimeout(() => {
-                clickCount = 0;
-            }, 300); // 300ms timeout for double-click
-        } else if (clickCount === 2) {
-            clearTimeout(clickTimer);
-            clickCount = 0;
-            toggleAvatar();
-        }
-    });
-    
-    // Toggle avatar function
-    function toggleAvatar() {
-        // Add transition effect
-        profileImage.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        profileImage.style.opacity = '0';
-        profileImage.style.transform = 'scale(0.8)';
-        
-        setTimeout(() => {
-            // Switch to next avatar
-            currentAvatarIndex = (currentAvatarIndex + 1) % avatars.length;
-            profileImage.src = avatars[currentAvatarIndex];
-            
-            // Wait for image to load, then adjust container size
-            profileImage.onload = function() {
-                adjustContainerSize();
-            };
-            
-            // Add glow effect
-            profileContainer.classList.add('avatar-switch-glow');
-            
-            // Fade in with scale effect
-            profileImage.style.opacity = '1';
-            profileImage.style.transform = 'scale(1.1)';
-            
-            // Remove glow effect after animation
-            setTimeout(() => {
-                profileImage.style.transform = 'scale(1)';
-                profileContainer.classList.remove('avatar-switch-glow');
-            }, 300);
-        }, 150);
-    }
-    
-    // Function to adjust container size based on image
-    function adjustContainerSize() {
-        const img = new Image();
-        img.onload = function() {
-            const aspectRatio = this.width / this.height;
-            const screenWidth = window.innerWidth;
-            
-            // Get base size based on screen width
-            let baseSize;
-            if (screenWidth <= 768) {
-                baseSize = 240; // Mobile
-            } else if (screenWidth <= 992) {
-                baseSize = 300; // Tablet
-            } else {
-                baseSize = 320; // Desktop
-            }
-            
-            let newSize;
-            
-            // Adjust size based on aspect ratio
-            if (aspectRatio > 1.1) {
-                // Wide image - increase width
-                const maxSize = baseSize + 40;
-                newSize = Math.min(maxSize, baseSize + (aspectRatio - 1) * 50);
-            } else if (aspectRatio < 0.9) {
-                // Tall image - increase height
-                const maxSize = baseSize + 40;
-                newSize = Math.min(maxSize, baseSize + (1 - aspectRatio) * 50);
-            } else {
-                // Square-ish image - default size
-                newSize = baseSize;
-            }
-            
-            // Apply new size with smooth transition
-            profileContainer.style.width = newSize + 'px';
-            profileContainer.style.height = newSize + 'px';
-            
-            // Update image size to fit container
-            const imageSize = newSize - 20; // Account for padding
-            profileImage.style.width = imageSize + 'px';
-            profileImage.style.height = imageSize + 'px';
-        };
-        img.src = avatars[currentAvatarIndex];
-    }
+    // This function is now empty as avatar switching has been disabled
+    // The spaceship effect handles the click interaction instead
+    console.log('Avatar toggle functionality disabled - using spaceship effect instead');
 }
 
 // Code Copy Functionality
@@ -850,4 +750,77 @@ async function copyCodeToClipboard(codeBlock, button) {
             button.style.background = '';
         }, 2000);
     }
+}
+
+// 🌍 Planets Animation
+function initPlanetsAnimation() {
+    const planets = document.querySelectorAll('.planet');
+    
+    if (planets.length === 0) {
+        console.log('No planets found');
+        return;
+    }
+    
+    // Add continuous movement for each planet
+    planets.forEach((planet, index) => {
+        // Random starting position
+        const randomX = Math.random() * 80 + 10; // 10% to 90%
+        const randomY = Math.random() * 80 + 10; // 10% to 90%
+        
+        planet.style.left = randomX + '%';
+        planet.style.top = randomY + '%';
+        
+        // Random animation delay
+        const randomDelay = Math.random() * 20;
+        planet.style.animationDelay = `-${randomDelay}s`;
+        
+        // Different animation durations for variety
+        const durations = [20, 25, 30, 35, 40, 45];
+        const randomDuration = durations[index % durations.length];
+        planet.style.animationDuration = `${randomDuration}s`;
+        
+        // Add continuous movement effect
+        planet.style.animationTimingFunction = 'linear';
+        planet.style.animationIterationCount = 'infinite';
+        
+        // Add hover effect
+        planet.addEventListener('mouseenter', function() {
+            planet.style.transform = 'scale(1.2)';
+            planet.style.opacity = '0.8';
+            planet.style.animationPlayState = 'paused';
+        });
+        
+        planet.addEventListener('mouseleave', function() {
+            planet.style.transform = 'scale(1)';
+            planet.style.opacity = '0.6';
+            planet.style.animationPlayState = 'running';
+        });
+    });
+    
+    // Add parallax effect on scroll
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+        
+        planets.forEach((planet, index) => {
+            const speed = (index + 1) * 0.1;
+            planet.style.transform = `translateY(${rate * speed}px)`;
+        });
+    });
+    
+    // Add random twinkling effect
+    setInterval(() => {
+        planets.forEach(planet => {
+            if (Math.random() < 0.1) { // 10% chance
+                planet.style.boxShadow = `
+                    0 0 30px rgba(255, 255, 255, 0.8),
+                    inset -10px -10px 20px rgba(0, 0, 0, 0.2)
+                `;
+                
+                setTimeout(() => {
+                    planet.style.boxShadow = '';
+                }, 1000);
+            }
+        });
+    }, 2000);
 }
