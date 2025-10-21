@@ -2908,11 +2908,142 @@ body {
   transform: scale(1.1);
 }
 
+/* 🎵 Music Bubble */
+.music-bubble {
+  position: fixed;
+  bottom: 100px; /* Above back-to-top button */
+  right: 20px; /* Same right position as back-to-top button */
+  width: 60px; /* Same size as back-to-top button */
+  height: 60px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.music-bubble:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+}
+
+.music-bubble:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* Add visual feedback when player is hidden */
+.music-bubble.player-hidden {
+  opacity: 0.7;
+  transform: scale(0.9);
+}
+
+.music-bubble.player-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Add progress ring effect similar to back-to-top */
+.music-bubble::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.music-bubble.playing::before {
+  opacity: 0.3;
+  animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.music-bubble.playing {
+  animation: bubblePulse 2s ease-in-out infinite;
+}
+
+.music-bubble i {
+  color: white;
+  font-size: 24px; /* Same size as back-to-top icon */
+  transition: all 0.3s ease;
+}
+
+.music-bubble.playing i {
+  animation: iconBounce 1s ease-in-out infinite;
+}
+
+@keyframes bubblePulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
+  }
+  50% { 
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+  }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* Bubble Visualizer */
+.music-bubble .bubble-visualizer {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: end;
+  gap: 1px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.music-bubble.playing .bubble-visualizer {
+  opacity: 1;
+}
+
+.bubble-visualizer .mini-bar {
+  width: 1.5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1px;
+  animation: miniVisualizer 1.5s ease-in-out infinite;
+}
+
+.bubble-visualizer .mini-bar:nth-child(1) { animation-delay: 0s; height: 6px; }
+.bubble-visualizer .mini-bar:nth-child(2) { animation-delay: 0.2s; height: 8px; }
+.bubble-visualizer .mini-bar:nth-child(3) { animation-delay: 0.4s; height: 10px; }
+.bubble-visualizer .mini-bar:nth-child(4) { animation-delay: 0.6s; height: 8px; }
+.bubble-visualizer .mini-bar:nth-child(5) { animation-delay: 0.8s; height: 6px; }
+
+@keyframes miniVisualizer {
+  0%, 100% { height: 3px; }
+  50% { height: 10px; }
+}
+
 /* 🎵 Music Player Styles */
 .music-player {
   position: fixed;
   bottom: 20px;
-  left: 20px;
+  right: 90px; /* Position to the left of bubble */
   background: rgba(0, 0, 0, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -2921,7 +3052,22 @@ body {
   z-index: 1000;
   min-width: 300px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform: translateX(100px) scale(0.8);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.music-player.show {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+}
+
+.music-player.hide {
+  transform: translateX(100px) scale(0.8);
+  opacity: 0;
+  visibility: hidden;
 }
 
 [data-theme="light"] .music-player {
@@ -3065,122 +3211,31 @@ body {
   height: 4px;
 }
 
-/* 🎵 Music Bubble Interface */
-.music-bubble {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
 
-.music-bubble:hover {
-  transform: scale(1.1);
-  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
-}
 
-.music-bubble.playing {
-  animation: bubblePulse 2s ease-in-out infinite;
-}
-
-.music-bubble i {
-  color: white;
-  font-size: 24px;
-  transition: all 0.3s ease;
-}
-
-.music-bubble.playing i {
-  animation: iconBounce 1s ease-in-out infinite;
-}
-
-@keyframes bubblePulse {
-  0%, 100% { 
-    transform: scale(1);
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.4);
-  }
-  50% { 
-    transform: scale(1.05);
-    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
-  }
-}
-
-@keyframes iconBounce {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-}
-
-/* Music Player States */
+/* Music Player States - Always visible */
 .music-player {
-  transform: translateY(100px);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.music-player.show {
-  transform: translateY(0);
   opacity: 1;
   visibility: visible;
 }
 
-.music-player.hide {
-  transform: translateY(100px);
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* Bubble Visualizer */
-.music-bubble .bubble-visualizer {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: end;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.music-bubble.playing .bubble-visualizer {
-  opacity: 1;
-}
-
-.bubble-visualizer .mini-bar {
-  width: 2px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 1px;
-  animation: miniVisualizer 1.5s ease-in-out infinite;
-}
-
-.bubble-visualizer .mini-bar:nth-child(1) { animation-delay: 0s; height: 8px; }
-.bubble-visualizer .mini-bar:nth-child(2) { animation-delay: 0.2s; height: 12px; }
-.bubble-visualizer .mini-bar:nth-child(3) { animation-delay: 0.4s; height: 16px; }
-.bubble-visualizer .mini-bar:nth-child(4) { animation-delay: 0.6s; height: 12px; }
-.bubble-visualizer .mini-bar:nth-child(5) { animation-delay: 0.8s; height: 8px; }
-
-@keyframes miniVisualizer {
-  0%, 100% { height: 4px; }
-  50% { height: 16px; }
-}
-
 /* Responsive Music Player */
 @media (max-width: 768px) {
+  .music-bubble {
+    bottom: 80px;
+    right: 15px; /* Same right position as back-to-top button on mobile */
+    width: 50px; /* Proportional to back-to-top button */
+    height: 50px;
+  }
+  
+  .music-bubble i {
+    font-size: 20px; /* Proportional to back-to-top icon */
+  }
+  
   .music-player {
     bottom: 10px;
+    right: 70px; /* Position to the left of bubble on mobile */
     left: 10px;
-    right: 10px;
     min-width: auto;
     padding: 12px 15px;
   }
@@ -3198,16 +3253,39 @@ body {
   .volume-slider {
     width: 60px;
   }
-  
+}
+
+@media (max-width: 480px) {
   .music-bubble {
-    width: 50px;
-    height: 50px;
-    bottom: 15px;
-    left: 15px;
+    bottom: 70px;
+    right: 10px; /* Same right position as back-to-top button on small mobile */
+    width: 45px; /* Proportional to back-to-top button */
+    height: 45px;
   }
   
   .music-bubble i {
-    font-size: 20px;
+    font-size: 18px; /* Proportional to back-to-top icon */
+  }
+  
+  .music-player {
+    bottom: 5px;
+    right: 60px; /* Position to the left of bubble on small mobile */
+    left: 5px;
+    padding: 10px 12px;
+  }
+  
+  .music-controls {
+    gap: 8px;
+  }
+  
+  .music-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+  
+  .volume-slider {
+    width: 50px;
   }
 }
 

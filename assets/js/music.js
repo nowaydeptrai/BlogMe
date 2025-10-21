@@ -87,20 +87,25 @@ class MusicPlayer {
     localStorage.setItem('musicPlayerState', JSON.stringify(this.persistentState));
   }
   
-  // Player visibility toggle
+  // Player visibility toggle - click once to show, click again to hide completely
   togglePlayer() {
     this.isPlayerVisible = !this.isPlayerVisible;
     this.updatePlayerVisibility();
     this.savePersistentState();
   }
   
+  
   updatePlayerVisibility() {
     if (this.isPlayerVisible) {
       this.musicPlayer.classList.remove('hide');
       this.musicPlayer.classList.add('show');
+      this.musicBubble.classList.remove('player-hidden');
+      this.musicBubble.classList.add('player-visible');
     } else {
       this.musicPlayer.classList.remove('show');
       this.musicPlayer.classList.add('hide');
+      this.musicBubble.classList.remove('player-visible');
+      this.musicBubble.classList.add('player-hidden');
     }
   }
   
